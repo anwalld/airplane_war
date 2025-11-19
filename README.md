@@ -1,9 +1,13 @@
 # Code Horizon-飞机大战
 
-#### 介绍
+## 项目简介
 {**以下是 Gitee 平台说明，您可以替换此简介**
 Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
 无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+
+##目录结构说明
+- documents -- 项目开发相关文档（如：项目需求文档、设计文档等等）
+- projects -- 项目源码（比如：前端项目、后端项目等等）
 
 #### 软件架构
 软件架构说明
