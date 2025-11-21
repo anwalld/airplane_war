@@ -1,27 +1,21 @@
 
 #ifndef AIRPLANE_WARS_ARCH_VIEW_H
 #define AIRPLANE_WARS_ARCH_VIEW_H
-void SettingView();
-
-void TimeView();
-
-void OutView();
-
-void GameInstructionsView();
-
-void GameSettingsView();
-
-void GameScene();
-
 void MenuView();
 
-//进程 锁帧
-void GameView(){
-	//easyx去读入选哪个
+void SettingsView();
 
-	//view函数
+void PrintTeamIntroduction();
 
-	//锁帧
+void Instructions();
 
-}
+void Exit();
+
+int ChoosePlane();/*该函数返回值决定 皮肤 MaxHp 射速等Player的性质
+					实现战机选择 数值和立绘展示 以及战机选择
+					-----即战备界面------*/
+
+void PrintGameScene();//载入战机图片 bgm 和飞机的数值
+
+void GameOverView();//展示得分
 #endif //AIRPLANE_WARS_ARCH_VIEW_H
