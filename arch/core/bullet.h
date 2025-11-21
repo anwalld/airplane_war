@@ -28,7 +28,7 @@ public:
 	// 根据输入的 app 算出唯一 int，再从资源库中掉出贴图
 	int MatchAppreciation(int app);
 
-	//移动计算 仅需计算 vv,xy 具体由SystemMove统一接口实现
+	//移动计算 仅需计算 vx,vy 具体由SystemMove统一接口实现
 	void OnMove();
 
 	//碰撞检测 如果撞上了&&子弹不来源与友方 去实现放音效 扣血 特效等 具体由IsCrash统一接口实现

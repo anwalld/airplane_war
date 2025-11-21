@@ -30,10 +30,10 @@ public:
 	//在屏幕上1/4处的随机位置生成敌机
 	pair<int,int>RandomProduce();
 
-	//实现行为模式的具体逻辑(产品经理做)需要返回vx(first)和vy(second)
+	//实现行为模式的具体逻辑需要返回vx(first)和vy(second)
 	pair<int,int> ModelAttack();
 
-	//移动计算 仅需计算vx vy 具体由SystemMove统一接口实现
+	//接收ModelAttack返回的vx vy 调用SystemMove
 	void OnMove() override;
 
 	//碰撞检测 只需要实现如果撞上了 放音效等 具体由IsCrash统一接口实现
