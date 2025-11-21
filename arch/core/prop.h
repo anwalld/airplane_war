@@ -17,7 +17,7 @@ public:
 
 	pair<int,int> NowCoord;
 
-	prop(int t, int cd);
+	prop();//type
 
 	//移动计算 仅需计算vx vy 具体由SystemMove统一接口实现 vx自己rand可正可负 vy要保证是正的
 	void OnMove();

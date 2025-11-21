@@ -16,13 +16,19 @@ public:
 	const int type;  // 0:小怪；1:精英怪；2:boss
 	const int Coef;
 
-	Enemy(int r, int mhp, int m, int t);
+	Enemy(int r, int mhp, int m, int t);//Nowcoord--RandomProduce;model和type--InitData;Coef--CalcuCoef;rad--ConstSide;
 
 	//根据dif GameTime AllKill model type算个系数赋给Coef
-	void CalcuCoef(const int GameTime,const int AllKill,const int dif);
+	int CalcuCoef(const int GameTime,const int AllKill,const int dif);
 
 	//根据Coef随机出model和type first--model  second--type
-	void InitData(int dif);
+	pair<int,int> InitModelAndType(int dif);
+
+	//根据type弄出3个固定的大小
+	int ConstSide();
+
+	//在屏幕上1/4处的随机位置生成敌机
+	pair<int,int>RandomProduce();
 
 	//实现行为模式的具体逻辑(产品经理做)需要返回vx(first)和vy(second)
 	pair<int,int> ModelAttack();

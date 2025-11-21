@@ -18,4 +18,6 @@ int ChoosePlane();/*该函数返回值决定 皮肤 MaxHp 射速等Player的性�
 void PrintGameScene();//载入战机图片 bgm 和飞机的数值
 
 void GameOverView();//展示得分
+
+void GameView();
 #endif //AIRPLANE_WARS_ARCH_VIEW_H

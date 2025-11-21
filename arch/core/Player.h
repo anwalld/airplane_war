@@ -12,7 +12,7 @@ class Enemy;
 
 class Player : public plane {
 public:
-    Player(int r, int mhp);
+    Player();//coord--固定位置生成
 
     //从easyx获取vx vy 具体由SystemMove统一接口实现
     void OnMove() override;

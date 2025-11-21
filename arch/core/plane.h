@@ -11,7 +11,7 @@ class Enemy;
 
 class plane {
 public:
-	int rad;
+	int rad;//大小和判定圆
 	int MaxHp;
 
 	int NowHp;
@@ -22,9 +22,6 @@ public:
 	prop* planeProp;
 
 	int shootAtk = 0;
-	pair<int,int> shootPos;
-
-	plane(int r, int mhp);
 
 	// 这些行为全部由 Manager 调用
 	virtual void OnMove() = 0;
