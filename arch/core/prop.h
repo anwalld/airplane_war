@@ -12,7 +12,7 @@ class plane;
 
 class prop {
 public:
-	const int type;
+	int type=0;
 	const int CD;
 
 	pair<int,int> NowCoord;

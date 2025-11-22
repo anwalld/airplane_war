@@ -25,11 +25,6 @@ class AllGame{
 	//根据游戏时间 实时改变dif 要求该函数应该保证单调递增
 	int ChangeDifWithTime();
 
-	//map vo skin ScreenX ScreenY在easyx里实现
-
-
-
-
 };
 #endif //AIRPLANE_WARS_ARCH_ENGINE_H
 
