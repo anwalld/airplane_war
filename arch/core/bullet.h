@@ -13,28 +13,18 @@ class plane;
 class bullet {
 public:
 	pair<int,int> NowCoord;
-	int Vbullet;
-	int rad;
+	int Vbullet=static_cast<int>(400/8.33);
+	int rad=32;
 	int app;
 
 	pair<int,int> InitCoord;
 	double k=0;
 
-	const int ATK;
+	const int ATK=10;
 	int Myself;//所有玩家的标为0 敌人的标为1
 
 	bullet();//initCoord--planeCoord ATK--planeAtk Myself--planeKind
-
-	//移动计算 仅需计算 vx,vy 具体由SystemMove统一接口实现
-	void OnMove();
-
-	//碰撞检测 如果撞上了&&子弹不来源与友方 去实现放音效 扣血 特效等 具体由IsCrash统一接口实现
-	void OnCrash();
-
-	//出界检测 只需实现如果出界了... 具体由IsOutRange统一接口实现
-	void OnOutRange();
-
-	// 子弹销毁 仅需实现消失动画等 delete由统一接口实现
-	void OnDestroy();
+	void OnHit(bool damage);     // 播放受击效果
+	void OnDestroy(bool damage);           // 播放死亡动画
 };
 #endif //AIRPLANE_WARS_BULLET_H

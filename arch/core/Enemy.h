@@ -17,31 +17,9 @@ public:
 
 	Enemy();//Nowcoord--RandomProduce;model和type--InitData;rad--ConstSide;
 
-	//按概率随机出modol
-	int RandomModol();
+	void OnHit(bool damage);     // 播放受击效果
+	void OnDestroy(bool damage);           // 播放死亡动画
 
-	//按概率随机出type
-	int RandomType();
 
-	//根据type弄出3个固定的大小
-	int ConstSide();
-
-	//在屏幕上1/4处的随机位置生成敌机
-	pair<int,int>RandomProduce();
-
-	//实现行为模式的具体逻辑需要返回vx(first)和vy(second)
-	pair<int,int> ModelAttack();
-
-	//接收ModelAttack返回的vx vy 调用SystemMove
-	void OnMove() override;
-
-	//碰撞检测 只需要实现如果撞上了 放音效等 具体由IsCrash统一接口实现
-	void OnCrash() override;
-
-	//出界检测 只需实现如果出界了撤回敌机的移动等 具体由IsOutRange统一接口实现
-	void OnOutRange() override;
-
-	// 敌机销毁 仅需实现 死于玩家加分，消失动画等 delete由统一接口实现
-	void OnDestroy() override;
 };
 #endif //AIRPLANE_WARS_ENEMY_H
