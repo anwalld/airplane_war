@@ -14,15 +14,14 @@ class Enemy : public plane {
 public:
 	const int modol; // 0:风筝；1:歼灭；2:进军
 	const int type;  // 0:小怪；1:精英怪；2:boss
-	const int Coef;
 
-	Enemy(int r, int mhp, int m, int t);//Nowcoord--RandomProduce;model和type--InitData;Coef--CalcuCoef;rad--ConstSide;
+	Enemy();//Nowcoord--RandomProduce;model和type--InitData;rad--ConstSide;
 
-	//根据dif GameTime AllKill算个系数赋给Coef
-	int CalcuCoef(const int GameTime,const int AllKill,const int dif);
+	//按概率随机出modol
+	int RandomModol();
 
-	//根据Coef随机出model和type first--model  second--type
-	pair<int,int> InitModelAndType(int dif);
+	//按概率随机出type
+	int RandomType();
 
 	//根据type弄出3个固定的大小
 	int ConstSide();
