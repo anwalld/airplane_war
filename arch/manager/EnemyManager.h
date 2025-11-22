@@ -7,15 +7,11 @@
 
 class EnemyManager {
 public:
+	EnemyManager();
 
 	std::vector<Enemy*> enemies;
-
-	// 难度控制敌机生成数量
-	void Produce(int dif);
-
-	void AddEnemy(Enemy* e) { enemies.push_back(e); }
-
-	void Update(Player* player);
+	void Produce();
+	void Update(;
 	void Render();
 	void GC();
 };

@@ -13,7 +13,7 @@ class plane;
 class bullet {
 public:
 	pair<int,int> NowCoord;
-	int Vbullet=static_cast<int>(400/8.33);
+	int Vbullet=20/120;
 	int rad=32;
 	int app;
 

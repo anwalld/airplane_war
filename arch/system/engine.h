@@ -12,7 +12,7 @@ class AllGame{
 	int AllKill=0;//杀了多少敌机
 	int GameTime=0;//游戏时间
 	int Score=0;//得分
-	int ScreenX,ScreenY;
+	int ScreenX=1920,ScreenY=1080;
 
 	static AllGame& instance(){
 		static AllGame obj;

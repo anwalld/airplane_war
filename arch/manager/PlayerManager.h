@@ -2,13 +2,12 @@
 #define AIRPLANE_WARS_PLAYER_MANAGER_H
 
 #include "../core/Player.h"
-
+#include <vector>
 class PlayerManager {
 public:
-	Player* player;
-
+	std::vector<Player*> players;
 	PlayerManager();
-
+	void Produce();
 	void Update();
 	void Render();
 	void GC();
