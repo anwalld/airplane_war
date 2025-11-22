@@ -18,7 +18,7 @@ public:
 
 	Enemy(int r, int mhp, int m, int t);//Nowcoord--RandomProduce;model和type--InitData;Coef--CalcuCoef;rad--ConstSide;
 
-	//根据dif GameTime AllKill model type算个系数赋给Coef
+	//根据dif GameTime AllKill算个系数赋给Coef
 	int CalcuCoef(const int GameTime,const int AllKill,const int dif);
 
 	//根据Coef随机出model和type first--model  second--type
