@@ -24,7 +24,5 @@ public:
 	int Myself;//所有玩家的标为0 敌人的标为1
 
 	bullet();//initCoord--planeCoord ATK--planeAtk Myself--planeKind
-	void OnHit(bool damage);     // 播放受击效果
-	void OnDestroy(bool damage);           // 播放死亡动画
 };
 #endif //AIRPLANE_WARS_BULLET_H
