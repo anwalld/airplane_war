@@ -7,7 +7,7 @@ class PlayerManager {
 public:
 	Player* player;
 
-	PlayerManager() { player = new Player(30, 100); }
+
 
 	void Update();
 	void Render();
