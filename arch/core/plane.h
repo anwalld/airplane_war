@@ -23,6 +23,8 @@ public:
 
 	int shootAtk = 0;
 
+	int Myself;//所有玩家的标为0 敌人的标为1
+
 	// 这些行为全部由 Manager 调用
 	virtual void OnMove() = 0;
 	virtual void OnCrash() = 0;
