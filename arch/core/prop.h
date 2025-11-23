@@ -14,6 +14,7 @@ class prop {
 public:
 	int type=0;
 	const int CD=10;
+	int camp=0;//阵营0表示为玩家阵营
 
 	pair<int,int> NowCoord;
 

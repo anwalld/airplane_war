@@ -13,7 +13,7 @@ public:
 	pair<int,int> coord;    // 坐标
 	int    Vshoot= 10;     // 射击间隔（帧数）
 	int    atk = 10;               // 子弹伤害
-	int    FromWho = 0;              // 0: 玩家；1: 敌机
+	int    camp = 0;              // 0: 玩家；1: 敌机
 
 	virtual ~plane() = default;
 };

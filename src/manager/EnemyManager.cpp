@@ -11,7 +11,7 @@ void EnemyManager::Produce() {
 	e->type=RandomType(e);
 	e->NowHp=e->maxHp=MaxHpMatchType(e);
 	e->rad=RadMatchType(e);
-	e->FromWho=1;
+	e->camp=1;
 	enemies.push_back(e);
 }
 
@@ -19,7 +19,11 @@ void EnemyManager::Update() {
 	enemies.erase(
 		std::remove_if(enemies.begin(), enemies.end(),
 		[](Enemy*e) {
-			return e->NowHp<=0;
+			if (e->NowHp<=0) {
+				AllKindDestroy(e);
+				return true;
+			}
+			else return false;
 		}),enemies.end()
 		);
 	for (auto&ee : enemies) {

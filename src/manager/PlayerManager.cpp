@@ -2,6 +2,7 @@
 #include "system/engine.h"
 #include "behavior/PlayerBehavior.h"
 #include"system/view.h"
+#include"system/system.h"
 PlayerManager::PlayerManager() {}
 void PlayerManager::Produce() {
 	Player*player=new Player();
@@ -11,7 +12,7 @@ void PlayerManager::Produce() {
 }
 void PlayerManager::Update() {
 	for (auto& player : players) {
-		if (player->NowHp<=0) {GameOverView();}
+		if (player->NowHp<=0) {AllKindDestroy(player);GameOverView();}
 		player->coord=CalcuPlayerMove(player);
 	}
 }

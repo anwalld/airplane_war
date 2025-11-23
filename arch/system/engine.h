@@ -13,6 +13,7 @@ class AllGame{
 	int GameTime=0;//游戏时间
 	int Score=0;//得分
 	int ScreenX=1920,ScreenY=1080;
+	int frameCount=0;
 
 	static AllGame& instance(){
 		static AllGame obj;

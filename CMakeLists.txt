@@ -28,5 +28,8 @@ add_executable(airplane_wars
         arch/behavior/EnemyBehavior.h
         arch/behavior/PlayerBehavior.h
         arch/behavior/PropBehavior.h
+        src/manager/BulletManager.cpp
+        arch/behavior/PlaneBehavior.h
+        src/Behavior/PlaneBehavior.cpp
 
 )
