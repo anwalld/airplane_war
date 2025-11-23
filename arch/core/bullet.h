@@ -13,12 +13,12 @@ class plane;
 class bullet {
 public:
 	pair<int,int> NowCoord;
-	int Vbullet=20/120;
+
 	int rad=32;
 	int app;
 
-	pair<int,int> InitCoord;
-	double k=0;
+	int vx;
+	int vy;
 
 	const int ATK=10;
 	int Myself;//所有玩家的标为0 敌人的标为1
