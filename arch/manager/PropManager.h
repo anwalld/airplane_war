@@ -18,4 +18,5 @@ public:
 	void GC();
 };
 
+
 #endif

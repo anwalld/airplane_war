@@ -10,4 +10,5 @@ std::pair<int,int>InitVyAndVy(bullet*b);
 //根据vx vy调用SystemMove;
 std::pair<int,int> CalcuBulletMove(pair<int,int>v,bullet* b);
 
+
 #endif //AIRPLANE_WARS_BULLETBEHAVIOR_H

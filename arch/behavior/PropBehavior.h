@@ -10,4 +10,5 @@ std::pair<int,int>RandomProduceCoord(prop*p);
 //道具的随即移动
 std::pair<int,int>RandonMove(prop*p);
 
+
 #endif //AIRPLANE_WARS_PROPBEHAVIOR_H

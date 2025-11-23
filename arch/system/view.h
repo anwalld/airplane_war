@@ -20,4 +20,5 @@ void PrintGameScene();//载入战机图片 bgm 和飞机的数值
 void GameOverView();//展示得分
 
 void GameView();
+
 #endif //AIRPLANE_WARS_ARCH_VIEW_H

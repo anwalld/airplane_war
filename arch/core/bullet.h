@@ -26,4 +26,5 @@ public:
 
 	bullet();//initCoord--planeCoord ATK--planeAtk Myself--planeKind
 };
+
 #endif //AIRPLANE_WARS_BULLET_H

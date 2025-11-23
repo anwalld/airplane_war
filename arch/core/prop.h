@@ -18,6 +18,5 @@ public:
 
 	pair<int,int> NowCoord;
 
-
 };
 #endif //AIRPLANE_WARS_PROP_H

@@ -14,4 +14,5 @@ public:
 	void GC();
 };
 
+
 #endif

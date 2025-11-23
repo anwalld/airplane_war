@@ -27,5 +27,4 @@ std::pair<int,int> Behavior_JinJun(Enemy*e);
 //调用SystemMove
 std::pair<int,int> CalculateEnemy(Enemy*e);
 
-
 #endif //AIRPLANE_WARS_ENEMYBEHAVIOR_H

@@ -19,4 +19,5 @@ void AllKindDestroy(T* obj);
 //敌我识别函数
 bool IsSameCamp(int A,int B);
 
+
 #endif //AIRPLANE_WARS_ARCH_SYSTEM_H

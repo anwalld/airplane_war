@@ -6,4 +6,5 @@ std::pair<int,int>CalcuPlayerMove(Player* p);
 
 //玩家生成位置
 std::pair<int,int>ProducePlayer(Player* p);
+
 #endif //AIRPLANE_WARS_PLAYERBEHAVIOR_H

@@ -27,6 +27,7 @@ class AllGame{
 	int ChangeDifWithTime();
 
 };
+
 #endif //AIRPLANE_WARS_ARCH_ENGINE_H
 
 

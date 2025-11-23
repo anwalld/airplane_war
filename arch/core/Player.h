@@ -12,4 +12,5 @@ public:
     void OnDestroy(int NowHp); // 播放死亡动画
 };
 
+
 #endif
