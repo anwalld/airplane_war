@@ -11,7 +11,7 @@ public:
 
 	std::vector<Enemy*> enemies;
 	void Produce();
-	void Update(;
+	void Update();
 	void Render();
 	void GC();
 };

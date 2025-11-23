@@ -8,7 +8,7 @@ class BulletManager {
 public:
 	std::vector<bullet*> bullets;
 
-	void AddBullet(bullet* b) { bullets.push_back(b); }
+	void AddBullet(bullet* b);
 
 	void Update(Player* player, const std::vector<Enemy*>& es);
 	void Render();
