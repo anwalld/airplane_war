@@ -31,5 +31,6 @@ add_executable(airplane_wars
         src/manager/BulletManager.cpp
         arch/behavior/PlaneBehavior.h
         src/Behavior/PlaneBehavior.cpp
+        src/manager/PropManager.cpp
 
 )

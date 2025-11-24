@@ -13,10 +13,10 @@ public:
 	EnemyManager enemyMgr;
 	BulletManager bulletMgr;
 	PropManager propMgr;
-	AllGame engine;
 
 	void Update();
 	void Render();
+	void CG();
 };
 
 

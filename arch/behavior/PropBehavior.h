@@ -1,8 +1,6 @@
 #ifndef AIRPLANE_WARS_PROPBEHAVIOR_H
 #define AIRPLANE_WARS_PROPBEHAVIOR_H
 #include "core/prop.h"
-//是否生成道具
-bool RandomProduce(prop*p);
 //生成那种道具
 int RandomType(prop*p);
 //随机生成坐标

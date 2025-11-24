@@ -67,9 +67,9 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 		}
 		else {
 			// 敌机子弹 → 打玩家
-			for (Player* p : p) {
-				if (IsSameCamp(p->camp,b->camp)) {
-					p->NowHp -= b->ATK;
+			for (Player* pp : p) {
+				if (IsSameCamp(pp->camp,b->camp)) {
+					pp->NowHp -= b->ATK;
 					b->alive = false;
 				}
 			}

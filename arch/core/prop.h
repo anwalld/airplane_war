@@ -15,6 +15,8 @@ public:
 	int type=0;
 	const int CD=10;
 	int camp=0;//阵营0表示为玩家阵营
+	int rad=100;
+	bool alive=true;
 
 	pair<int,int> NowCoord;
 
