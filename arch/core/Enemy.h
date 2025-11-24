@@ -14,6 +14,8 @@ class Enemy : public plane {
 public:
 	int modol; // 0:风筝；1:歼灭；2:进军
 	int type;  // 0:小怪；1:精英怪；2:boss
+	int vx;
+	int vy;
 
 	void OnHit(bool damage);     // 播放受击效果
 	void OnDestroy(int NowHp);   // 播放死亡动画
