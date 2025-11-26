@@ -1,0 +1,25 @@
+#include "Mgr-PlayerMgr.h"
+#include "system-engine.h"
+#include "Behavior-PlayerBehavior.h"
+#include"system-view.h"
+#include"system-system.h"
+PlayerManager::PlayerManager() {}
+void PlayerManager::Produce() {
+	Player* player = new Player();
+	player->coord = ProducePlayer(player);
+	player->NowHp = player->maxHp = 100;
+	players.push_back(player);
+}
+void PlayerManager::Update() {
+	for (auto& player : players) {
+		if (player->NowHp <= 0) { AllKindDestroy(player); }
+		player->coord = GetPlayerCoord(player);
+	}
+}
+void PlayerManager::Render() {
+
+}
+void PlayerManager::GC() {
+
+}
+
