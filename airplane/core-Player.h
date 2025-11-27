@@ -6,7 +6,7 @@
 
 class Player : public plane {
 public:
-    double speed = 200 / 120;              // 每帧可移动的像素
+    double speed = 1.0*200 / 120;              // 每帧可移动的像素
 	int AddATK = 5;					   // 额外攻击力
 };
 

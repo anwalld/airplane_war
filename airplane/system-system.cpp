@@ -9,8 +9,8 @@ using std::pair;
 
 //通用移动计算函数
 pair<double, double>SystemMove(pair<double, double>NowCoord, double vx, double vy) {
-    double AfterCoordX = NowCoord.first + (vx * 1000 * 1.0 / 120);
-    double AfterCoordY = NowCoord.second +(vy * 1000 * 1.0 / 120);
+    double AfterCoordX = NowCoord.first + vx;
+    double AfterCoordY = NowCoord.second +vy;
 	return std::make_pair(AfterCoordX, AfterCoordY);
 }
 

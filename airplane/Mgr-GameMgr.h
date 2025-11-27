@@ -15,7 +15,6 @@ public:
 	EnemyManager enemyMgr;
 	BulletManager bulletMgr;
 	PropManager propMgr;
-
 	void Update();
 	void Render();
 	void CG();

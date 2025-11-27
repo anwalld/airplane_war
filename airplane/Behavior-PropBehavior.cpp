@@ -38,7 +38,7 @@ std::pair<double, double>LeaveMoveVxAndVy(prop* p) {
 		CurVx[p] = -std::fabs(CurVx[p]);
 		TarVx[p] = -std::fabs(TarVx[p]);
 	}
-	CurVx[p] = (TarVx[p] - CurVx[p]) * 0.2;
+	CurVx[p] += (TarVx[p] - CurVx[p]) * 0.2;
 	p->vx = p->speed * CurVx[p];
 	p->vy = 2;
 	return { p->vx,p->vy };

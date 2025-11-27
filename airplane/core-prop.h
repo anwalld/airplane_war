@@ -19,7 +19,7 @@ public:
 	int rad = 100;
 	bool alive = true;
 	double vx, vy, speed=7;
-	pair<double, double> NowCoord;
+	pair<double, double> NowCoord = {0,0};
 
 };
 #endif //AIRPLANE_WARS_PROP_H

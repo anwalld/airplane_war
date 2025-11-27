@@ -10,7 +10,7 @@ public:
 	int    rad = 100;               // ÅÐ¶¨Ô²°ë¾¶
 	int    maxHp = 0;
 	int    NowHp = 0;
-	pair<double, double> coord;    // ×ø±ê
+	pair<double, double> coord = {0,0};    // ×ø±ê
 	int    Vshoot = 10;     // Éä»÷¼ä¸ô£¨Ö¡Êý£©
 	int    atk = 10;               // ×Óµ¯ÉËº¦
 	int    camp = 0;              // 0: Íæ¼Ò£»1: µÐ»ú

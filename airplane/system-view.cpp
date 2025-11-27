@@ -283,6 +283,7 @@ void GameView() {
 
 
 	GameManager g;
+	
 	while ((*g.playerMgr.players[0]).NowHp > 0) {
 			g.Update();
 			g.Render();
