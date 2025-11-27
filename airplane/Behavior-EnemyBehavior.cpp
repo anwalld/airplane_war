@@ -5,22 +5,9 @@
 #include "system-engine.h"
 #include "system-system.h"
 #include"core-Player.h"
-static std::random_device rd;
-static std::mt19937 gen(rd());
-const int ScreenX = AllGame::instance().ScreenX;
-const int ScreenY = AllGame::instance().ScreenY;
-// 每个敌机独立的风筝方向
-static std::unordered_map<Enemy*, int> fengzhengDir;
-
-// 每个敌机 JinJun 的随机 vx 平滑系统
-static std::unordered_map<Enemy*, float> jinCurrentVx;
-static std::unordered_map<Enemy*, float> jinTargetVx;
 
 // 生成 1/4 区域内的随机坐标
-std::pair<int, int> RandomLocationProduce(Enemy* e) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-
+std::pair<double, double> RandomLocationProduce(Enemy* e) {
     // 根据 type 匹配 rad（碰撞圆半径）
     switch (e->type) {
     case 0: e->rad = 45 / 2; break;
@@ -29,70 +16,52 @@ std::pair<int, int> RandomLocationProduce(Enemy* e) {
     }
 
     // X 轴随机范围 [e->rad, ScreenX - e->rad]
-    std::uniform_int_distribution<int> disX(e->rad, ScreenX - e->rad);
-    e->coord.first = disX(gen);
+    e->coord.first = RandomDouble(e->rad,AllGame::instance().ScreenX-e->rad);
 
     // Y 轴随机范围 [e->rad, ScreenY/4 - e->rad]（上方 1/4 区域）
-    int topQuarterHeight = ScreenY / 4;
-    std::uniform_int_distribution<int> disY(e->rad, topQuarterHeight - e->rad);
-    e->coord.second = disY(gen);
+    double topQuarterHeight = 1.0* AllGame::instance().ScreenY / 4;
+	e->coord.second = RandomDouble(e->rad, topQuarterHeight - e->rad);
 
     return e->coord;
 }
-
-// 计算系数
-int CalculateCoef(Enemy* e) {
-    return e->type + 1;
-}
-
-// 随机生成 modol (0: 小型 1: 中型 2: 大型)
-int RandomModol(Enemy* e) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(0, 2);
-
-    e->modol = dis(gen);
-    return e->modol;
-}
-
-// 随机类型（随时间调整权重）
-int RandomType(Enemy* e) {
-    int gameTime = AllGame::instance().GameTime;
-    int minute = gameTime / 60;
-
-    std::vector<int> weights;
-
-    if (minute < 1) {
-        weights = { 70, 25, 5 };
+//根据难度系数计算敌人模型和类型
+std::pair<int, int>RandomModelAndTypeWithCoef(Enemy* e) {
+    //辅助函数
+    auto Lerp = [](double a, double b, double t) {
+        return a + (b - a) * t;
+        };
+    auto ThreeChooseOneWithCoef = [Lerp](pair<double, double>a, pair<double, double>b, pair<double, double>c, double coef)->int {
+        double pa = Lerp(a.first, a.second, coef);
+        double pb = Lerp(b.first, b.second, coef);
+        double pc = Lerp(c.first, c.second, coef);
+        double sum = pa + pb + pc;
+        pa /= sum;
+        pb /= sum;
+        pc /= sum;
+        double j = RandomDouble(0, 1);
+        if (j <= pa)return 0;
+        else if (j <= pb)return 1;
+        else return 2;
+        };
+    // 根据 coef 计算 type
+    e->type = ThreeChooseOneWithCoef({ 0.9,0 }, { 0.1,0.2 }, { 0.0,0.8 }, AllGame::instance().coef);
+    // 根据 type 匹配 modol
+    switch (e->type) {
+    case 0: {//小怪
+        e->modol = ThreeChooseOneWithCoef({ 0.4,0.1 }, { 0.25,0.45 }, { 0.15,0.45 }, AllGame::instance().coef);
+        break;
     }
-    else if (minute < 3) {
-        weights = { 20, 30, 40 };
+    case 1: {//精英怪
+        e->modol = ThreeChooseOneWithCoef({ 0.2,0.1 }, { 0.4,0.45 }, { 0.4,0.45 }, AllGame::instance().coef);
+        break;
     }
-    else if (minute < 5) {
-        weights = { 0, 40, 40 };
+    case 2: {//boss
+        e->modol = 0;
+        break;
     }
-    else {
-        weights = { 0, 10, 90 };
-    }
+          return  { e->modol,e->type };
 
-    int total = weights[0] + weights[1] + weights[2];
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(1, total);
-    int r = dis(gen);
-
-    if (r <= weights[0]) {
-        e->type = 0;
-        return 0;
-    }
-    else if (r <= weights[0] + weights[1]) {
-        e->type = 1;
-        return 1;
-    }
-    else {
-        e->type = 2;
-        return 2;
-    }
+    };
 }
 
 // 根据 Type 匹配半径
@@ -114,115 +83,86 @@ int MaxHpMatchType(Enemy* e) {
     }
     return 0;
 }
-
-// ==========================================================
-// 0：风筝（独立 dir）
-// ==========================================================
-std::pair<int, int> Behavior_FengZheng(Enemy* e) {
-
-    if (!fengzhengDir.count(e)) {
-        fengzhengDir[e] = 1;  // 初始向右
+// 每个敌机独立的风筝方向
+static std::unordered_map<Enemy*, int> fengzhengDir;
+//风筝
+std::pair<double, double> Behavior_FengZheng(Enemy* e) {
+    //1:->   -1:<-
+    if (fengzhengDir.find(e) == fengzhengDir.end()) {
+        fengzhengDir[e] = 1;
     }
-
     int& dir = fengzhengDir[e];
-
-    if (e->coord.first - e->rad <= 0) dir = 1;
-    else if (e->coord.first + e->rad >= ScreenX) dir = -1;
-
-    int vx = dir * (sqrt(e->vx * e->vx + e->vy * e->vy)) * CalculateCoef(e);
-    int vy = 0;
-
-    return { vx, vy };
+    if (e->coord.first - e->rad <= 0)dir = 1;
+    else if (e->coord.first + e->rad >= AllGame::instance().ScreenX)dir = -1;
+    double vx=dir*e->speed* AllGame::instance().coef;
+    double vy = RandomDouble(-0.1, 0.1);
+    if (vx > 0 && vx < 0.1)vx = 0.1;
+    else if (vx < 0 && vx > -0.1)vx = -0.1;
+    return { vx,vy };
 }
 
-
-
-// ==========================================================
-// 1：歼灭（追踪玩家）
-// ==========================================================
-std::pair<int, int> Behavior_JianMie(Enemy* e, Player* p) {
+//歼灭
+std::pair<double, double> Behavior_JianMie(Enemy* e, Player* p) {
 
     double dx = p->coord.first - e->coord.first;
     double dy = p->coord.second - e->coord.second;
 
     double dist = std::sqrt(dx * dx + dy * dy);
-    if (dist < 1.0) dist = 1.0;  // 避免除 0
+    if (dist < 1.0) dist = 1.0;
 
     double ux = dx / dist;
     double uy = dy / dist;
 
-    int speedBase = (sqrt(e->vx * e->vx + e->vy * e->vy)) * CalculateCoef(e);
+    double speedBase = e->speed * AllGame::instance().coef;
 
-    int vx = static_cast<int>(ux * speedBase);
-    int vy = static_cast<int>(uy * speedBase);
+    double vx = ux * speedBase;
+    double vy = uy * speedBase;
 
-    if (vx == 0 && dx > 0) vx = 1;
-    if (vx == 0 && dx < 0) vx = -1;
+    // 纠正太小的 vx
+    if (std::abs(vx) < 0.01 && dx > 0) vx = 0.01;
+    if (std::abs(vx) < 0.01 && dx < 0) vx = -0.01;
 
     return { vx, vy };
 }
-
-
-
-// ==========================================================
-// 2：进军（vx 大小随机 + 平滑，vy 恒定向下）
-// ==========================================================
-std::pair<int, int> Behavior_JinJun(Enemy* e) {
-
-    // 每个敌机有自己独立的 vx 曲线
-    if (!jinCurrentVx.count(e)) {
-        jinCurrentVx[e] = 0.0f;
-        jinTargetVx[e] = 0.0f;
+// 每个敌机 JinJun 的随机 vx系统
+static std::unordered_map<Enemy*, double> jinCurrentVx;
+static std::unordered_map<Enemy*, double> jinTargetVx;
+std::pair<double, double> Behavior_JinJun(Enemy* e) {
+    if (jinCurrentVx.find(e) == jinCurrentVx.end()) {
+        jinCurrentVx[e] = 0;
+        jinTargetVx[e] = 1;
     }
-
-    float& cur = jinCurrentVx[e];
-    float& tgt = jinTargetVx[e];
-
-    // 左右边界反转 vx 符号
+    double& cur = jinCurrentVx[e];
+    double& tgt = jinTargetVx[e];
+    if (RandomDouble(0, 1) <= 0.05) {
+        tgt = RandomDouble(-1,1);
+    }
     if (e->coord.first - e->rad <= 0) {
         cur = std::fabs(cur);
         tgt = std::fabs(tgt);
     }
-    else if (e->coord.first + e->rad >= ScreenX) {
+    else if (e->coord.first + e->rad >=AllGame::instance().ScreenX) {
         cur = -std::fabs(cur);
         tgt = -std::fabs(tgt);
     }
-
-    // 小概率更新随机目标速度（更自然）
-    std::uniform_real_distribution<float> prob(0.0f, 1.0f);
-    if (prob(gen) < 0.03f) {
-        std::uniform_real_distribution<float> dist(1.0f, 4.0f);
-        float newSpeed = dist(gen);
-        tgt = (cur >= 0 ? newSpeed : -newSpeed);
-    }
-
-    // 平滑逼近目标速度
-    cur += (tgt - cur) * 0.1f;
-
-    int base = (sqrt(e->vx * e->vx + e->vy * e->vy)) * CalculateCoef(e);
-    int vx = static_cast<int>(cur * base);
-    int vy = base;
-
-    return { vx, vy };
+    cur += (tgt - cur) * 0.15;
+    e->vx = e->speed * cur;
+    e->vy = 1;
+    return { e->vx,e->vy };
 }
+//移动接口
+std::pair<double, double> CalculateEnemy(Enemy* e, Player* p) {
 
-
-
-// ==========================================================
-// 统一移动入口：唯一更新坐标
-// ==========================================================
-std::pair<int, int> CalculateEnemy(Enemy* e, Player* p) {
-
-    std::pair<int, int> step{ 0, 0 };
+    std::pair<double, double> v;
 
     switch (e->modol) {
-    case 0: step = Behavior_FengZheng(e); break;
-    case 1: step = Behavior_JianMie(e, p); break;
-    case 2: step = Behavior_JinJun(e); break;
+    case 0: v = Behavior_FengZheng(e); break;
+    case 1: v = Behavior_JianMie(e, p); break;
+    case 2: v = Behavior_JinJun(e);   break;
     }
 
-    // SystemMove 负责统一处理边界 / 撞墙等
-    e->coord = SystemMove(e->coord, step.first, step.second);
+    // SystemMove(double,double)
+    e->coord = SystemMove(e->coord, v.first, v.second);
 
     return e->coord;
 }

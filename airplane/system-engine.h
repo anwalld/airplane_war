@@ -11,12 +11,13 @@ public:
 	int vo = 0;//音量
 	int se = 0;//音效
 	int skin = 0;//皮肤
+
 	int AllKill = 0;//杀了多少敌机
-	int GameTime = 0;//游戏时间
-	int Score = 0;//得分
+	int GameTime = 0;//游戏时间(s)
 	int ScreenX = 1920, ScreenY = 1080;
-	int frameCount = 0;
+	int frameCount = 0;//游戏时间(帧)
 	bool Stop = false;
+	double coef = 0;//难度系数
 
 	static AllGame& instance() {
 		static AllGame obj;
@@ -28,7 +29,8 @@ public:
 
 	//根据游戏时间 实时改变dif 要求该函数应该保证单调递增
 	int ChangeDifWithTime();
-
+	//计算难度系数
+	double CalculateCoef();
 };
 
 #endif //AIRPLANE_WARS_ARCH_ENGINE_H

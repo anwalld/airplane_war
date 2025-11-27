@@ -3,7 +3,6 @@
 #include "Behavior-PlayerBehavior.h"
 #include"system-view.h"
 #include"system-system.h"
-PlayerManager::PlayerManager() {}
 void PlayerManager::Produce() {
 	Player* player = new Player();
 	player->coord = ProducePlayer(player);

@@ -7,7 +7,6 @@
 class PlayerManager {
 public:
 	std::vector<Player*> players;
-	PlayerManager();
 	void Produce();
 	void Update();
 	void Render();

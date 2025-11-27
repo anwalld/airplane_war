@@ -18,8 +18,8 @@ public:
 	int camp = 0;//阵营0表示为玩家阵营
 	int rad = 100;
 	bool alive = true;
-
-	pair<int, int> NowCoord;
+	double vx, vy, speed=7;
+	pair<double, double> NowCoord;
 
 };
 #endif //AIRPLANE_WARS_PROP_H

@@ -5,9 +5,9 @@
 #include <utility>
 #include"core-Player.h"
 //从easyx中读移动坐标
-std::pair<int, int>GetPlayerCoord(Player* p);
+std::pair<double, double>GetPlayerCoord(Player* p);
 
 //玩家生成位置
-std::pair<int, int>ProducePlayer(Player* p);
+std::pair<double, double>ProducePlayer(Player* p);
 
 #endif //AIRPLANE_WARS_PLAYERBEHAVIOR_H

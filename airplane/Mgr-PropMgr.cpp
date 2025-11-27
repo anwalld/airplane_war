@@ -6,9 +6,9 @@
 #include "core-Player.h"
 
 void PropManager::Produce() {
-	prop* p = new prop;
 	if (RandomProduce(AllGame::instance().dif))
 	{
+		prop* p = new prop;
 		p->type = RandomType(p);
 		p->NowCoord = RandomProduceCoord(p);
 		AddProp(p);
@@ -16,19 +16,9 @@ void PropManager::Produce() {
 }
 void PropManager::AddProp(prop* p) { props.push_back(p); }
 bool PropManager::RandomProduce(int dif) {
-	std::vector<int>weights(4);
-	weights[0] = 10; weights[1] = 15; weights[2] = 50; weights[3] = 25;
-	int ans = -1;
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(0, 100);
-	int x = dist(mt);
-	if (x <= weights[0])ans = 0;
-	else if (x <= weights[1] + weights[0])ans = 1;
-	else if (x <= weights[2] + weights[1] + weights[0])ans = 2;
-	else if (x <= weights[3] + weights[2] + weights[1] + weights[0])ans = 3;
-	else ans = -1;
-	return ans == 0 ? true : false;
+	double pSuceess = 0.001 + (0.005 - 0.001) * ((1.0 * dif / 10.0) > 1.0 ? 1.0 : (1.0 * dif / 10.0));
+	double r = RandomDouble(0, 1);
+	return r <= pSuceess;
 }
 void PropManager::Update(Player* player) {
 	props.erase(std::remove_if(props.begin(), props.end(),
@@ -40,9 +30,8 @@ void PropManager::Update(Player* player) {
 			return false;
 		}), props.end());
 	for (prop* pp : props) {
-		int vx = RandonMove(pp).first;
-		int vy = RandonMove(pp).second;
-		pp->NowCoord = SystemMove(pp->NowCoord, vx, vy);
+		std::pair<double, double>v = PropMoveCoord(pp);
+		pp->NowCoord = SystemMove(pp->NowCoord, v.first, v.second);
 	}
 	for (prop* p : props) {
 		if (IsCrash(p->NowCoord, p->rad, player->coord, player->rad)) {

@@ -8,8 +8,6 @@
 
 class EnemyManager {
 public:
-	EnemyManager();
-
 	std::vector<Enemy*> enemies;
 	void Produce();
 	void Update(Player*p);

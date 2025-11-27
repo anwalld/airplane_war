@@ -12,3 +12,9 @@ int AllGame::ChangeDifWithTime() {
     if (AllGame::instance().GameTime % 30 == 0)AllGame::instance().dif++;
     return AllGame::instance().dif;
 }
+
+double AllGame::CalculateCoef() {
+    // ¼ÆËãÏµÊı
+    double coef = 0.65 * (1.0*AllGame::instance().GameTime / (5 * 60)) + 0.2 * (1.0*AllGame::instance().AllKill / 500)+0.15*(AllGame::instance().dif/(5*2));
+    return coef >= 1 ? 1 : coef;
+}

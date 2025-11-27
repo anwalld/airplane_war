@@ -3,15 +3,17 @@
 #include <algorithm>
 #include "Behavior-EnemyBehavior.h"
 #include "core-Enemy.h"
-EnemyManager::EnemyManager() {}
+#include"system-engine.h"
 void EnemyManager::Produce() {
 	Enemy* e = new Enemy();
 	e->coord = RandomLocationProduce(e);
-	e->modol = RandomModol(e);
-	e->type = RandomType(e);
+	auto [modol, type] = RandomModelAndTypeWithCoef(e);
+	e->modol = modol;
+	e->type = type;
 	e->NowHp = e->maxHp = MaxHpMatchType(e);
 	e->rad = RadMatchType(e);
 	e->camp = 1;
+	e->Vshoot = 120;
 	enemies.push_back(e);
 }
 
@@ -20,6 +22,7 @@ void EnemyManager::Update(Player*p) {
 		std::remove_if(enemies.begin(), enemies.end(),
 			[](Enemy* e) {
 				if (e->NowHp <= 0) {
+					AllGame::instance().AllKill++;
 					AllKindDestroy(e);
 					return true;
 				}

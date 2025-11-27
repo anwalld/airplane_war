@@ -17,11 +17,20 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 		if (ShouldFire(pp)) {
 			bullet* b = new bullet();
 			b->app = AppMatchEnemyType(b);
-			b->vx = InitVyAndVy(b).first;
-			b->vy = InitVyAndVy(b).second;
+			b->Type = RandomInt(0, 2);//玩家子弹类型随机
+			switch (b->Type) {
+			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
+			case 1: { auto [vx, vy] = BiasBullet(b); b->vx = vx; b->vy = vy; break; }
+			case 2: {
+				auto [vx, vy] = TracedBullet(b, pp);
+				b->vx = vx; b->vy = vy; break;
+			}
+			default:{ auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
+			}
 			b->camp = 0;
 			b->NowCoord = pp->coord;
 			b->alive = true;
+			b->ATK += pp->AddATK;
 			AddBullet(b);
 		}
 	}
@@ -29,8 +38,17 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 		if (ShouldFire(ee)) {
 			bullet* b = new bullet();
 			b->app = AppMatchEnemyType(b);
-			b->vx = InitVyAndVy(b).first;
-			b->vy = InitVyAndVy(b).second;
+			auto [ATK, Type, Rad] = RandomAtkAndTypeAndRad(ee, b);
+			b->ATK = ATK;
+			b->Type = Type;
+			b->rad = Rad;
+			switch (b->Type) {
+			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
+			case 1: { auto [vx, vy] = BiasBullet(b); b->vx = vx; b->vy = vy; break; }
+			case 2: 
+				auto [vx, vy] = TracedBullet(b, p[0]);
+				b->vx = vx; b->vy = vy; break;
+			}
 			b->camp = 1;
 			b->NowCoord = ee->coord;
 			b->alive = true;
@@ -54,7 +72,7 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 
 	// 2. 移动子弹
 	for (bullet* b : bullets) {
-		b->NowCoord = SystemMove(b->NowCoord, b->vx, b->vy);
+		b->NowCoord = CalcuBulletMove(b,p[0]);
 	}
 
 	// 3. 碰撞检测

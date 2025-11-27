@@ -14,15 +14,15 @@ class plane;
 
 class bullet {
 public:
-	pair<int, int> NowCoord;
+	pair<double, double> NowCoord;
 
 	int rad = 32;
 	int app;
 
-	int vx;
-	int vy;
+	double vx;
+	double vy;
 
-	const int ATK = 10;
+	int ATK=15, Type;//子弹的攻击力和类型----类型：0：直线子弹，1：任意角度斜子弹，2：跟踪子弹
 	int camp;//所有玩家的标为0 敌人的标为1
 	bool alive;
 };
