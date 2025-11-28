@@ -10,6 +10,10 @@ void PlayerManager::Produce() {
 	players.push_back(player);
 }
 void PlayerManager::Update() {
+	if (PlayerManager::IsProduce == false) {
+		PlayerManager::Produce();
+		IsProduce = true;
+	}
 	for (auto& player : players) {
 		if (player->NowHp <= 0) { AllKindDestroy(player); }
 		player->coord = GetPlayerCoord(player);

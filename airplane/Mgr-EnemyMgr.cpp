@@ -4,6 +4,9 @@
 #include "Behavior-EnemyBehavior.h"
 #include "core-Enemy.h"
 #include"system-engine.h"
+static bool IsProduce() {
+	//根据AllGame::instance().coef得出生成敌机概率 根据这个概率判断本帧是否生成敌机
+}
 void EnemyManager::Produce() {
 	Enemy* e = new Enemy();
 	e->coord = RandomLocationProduce(e);
@@ -18,6 +21,7 @@ void EnemyManager::Produce() {
 }
 
 void EnemyManager::Update(Player*p) {
+	if (IsProduce())EnemyManager::Produce();
 	enemies.erase(
 		std::remove_if(enemies.begin(), enemies.end(),
 			[](Enemy* e) {

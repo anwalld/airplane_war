@@ -5,15 +5,6 @@
 #include "system-engine.h"
 #include "system-system.h"
 #include"core-Player.h"
-int RadMatchType(Enemy* e) {
-    // 根据 type 匹配 rad（碰撞圆半径）
-    switch (e->type) {
-    case 0: e->rad = 45 / 2; break;
-    case 1: e->rad = 60 / 2; break;
-    case 2: e->rad = 70 / 2; break;
-    }
-    return e->rad;
-}
 // 生成 1/4 区域内的随机坐标
 std::pair<double, double> RandomLocationProduce(Enemy* e) {
     // X 轴随机范围 [e->rad, ScreenX - e->rad]
@@ -61,8 +52,12 @@ std::pair<int, int>RandomModelAndTypeWithCoef(Enemy* e) {
         break;
     }
           return  { e->modol,e->type };
-
+    default: {
+        e->modol = ThreeChooseOneWithCoef({ 0.4,0.1 }, { 0.25,0.45 }, { 0.15,0.45 }, AllGame::instance().coef);
+        break;
+    }
     };
+    return { e->modol,e->type };
 }
 
 // 根据 Type 匹配半径

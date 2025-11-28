@@ -6,13 +6,10 @@
 #include "core-Player.h"
 
 void PropManager::Produce() {
-	if (RandomProduce(AllGame::instance().dif))
-	{
 		prop* p = new prop;
 		p->type = RandomType(p);
 		p->NowCoord = RandomProduceCoord(p);
 		AddProp(p);
-	}
 }
 void PropManager::AddProp(prop* p) { props.push_back(p); }
 bool PropManager::RandomProduce(int dif) {
@@ -21,6 +18,7 @@ bool PropManager::RandomProduce(int dif) {
 	return r <= pSuceess;
 }
 void PropManager::Update(Player* player) {
+	if(PropManager::RandomProduce(AllGame::instance().dif))PropManager::Produce();
 	props.erase(std::remove_if(props.begin(), props.end(),
 		[](prop* p) {
 			if (IsOutRange(p->NowCoord)) {

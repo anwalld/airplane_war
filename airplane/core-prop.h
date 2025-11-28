@@ -18,7 +18,7 @@ public:
 	int camp = 0;//阵营0表示为玩家阵营
 	int rad = 100;
 	bool alive = true;
-	double vx, vy, speed=7;
+	double vx=2, vy=2, speed=7;
 	pair<double, double> NowCoord = {0,0};
 
 };
