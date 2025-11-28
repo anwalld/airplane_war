@@ -48,3 +48,31 @@ std::pair<double, double>PropMoveCoord(prop* p) {
 	p->NowCoord = SystemMove(p->NowCoord,v.first,v.second);
 	return p->NowCoord;
 }
+//道具的具体功能实现
+//0--永久加属性类
+//0.0减小飞机vShoot
+void PropEffect_DecreaseVShoot(Player* player, prop* p);
+//0.1增加子弹伤害
+void PropEffect_IncreaseBulletDamage(Player* player, prop* p);
+//0.2增加子弹攻击力
+void PropEffect_IncreaseBulletAtk(Player* player, prop* p);
+//0.3增加飞机MaxHp
+void PropEffect_IncreasePlaneMaxHp(Player* player, prop* p);
+//0.4增加飞机speed
+void PropEffect_IncreasePlaneSpeed(Player* player, prop* p);
+//1--一次性道具类
+//1.0回血
+void PropEffect_Heal(Player* player, prop* p);
+//1.1清屏
+void PropEffect_ClearScreen(std::vector<bullet*>& bullets, std::vector<Enemy*>& enemies, prop* p);
+//1.2无敌(更改身份识别)
+void PropEffect_Invincible(Player* player, prop* p);
+//1.3全屏炸弹
+void PropEffect_FullScreenBomb(std::vector<Enemy*>& enemies,prop* p);
+//2--限时类
+//2.0激光武器
+void PropEffect_LaserWeapon(Player* player, prop* p);
+//2.1超级子弹
+void PropEffect_SuperBullet(Player* player, prop* p);
+//2.2难度暂时降低
+void PropEffect_DecreaseDif(prop* p);
