@@ -78,7 +78,7 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 		if (AllGame::instance().GameTime - t >= p->CD) {
 			switch (p->num) {
 			case 0: {
-				player->Vshoot /= 0.1;
+				player->Vshoot +=9;
 				player->AddATK += 5;
 				break;
 			}

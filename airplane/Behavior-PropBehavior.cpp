@@ -177,7 +177,7 @@ void PropEffect_FullScreenBomb(EnemyManager& e, prop* p) {
 //2--限时类
 //2.0激光武器
 void PropEffect_LaserWeapon(Player* player, prop* p) {
-    player->Vshoot *= 0.1;
+    player->Vshoot  = 1;
     player->AddATK -= 5;
 }
 //2.1超级子弹
