@@ -14,6 +14,7 @@ public:
 	int    Vshoot = 10;     // Éä»÷¼ä¸ô£¨Ö¡Êý£©
 	int    atk = 10;               // ×Óµ¯ÉËº¦
 	int    camp = 0;              // 0: Íæ¼Ò£»1: µÐ»ú
+	int skin = 0;               // Æ¤·ô±àºÅ
 
 	virtual ~plane() = default;
 };

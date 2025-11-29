@@ -4,13 +4,16 @@
 
 #include <vector>
 #include "core-prop.h"
+#include<unordered_map>
+#include"Mgr-BulletMgr.h"
+#include"Mgr-EnemyMgr.h"
 class PropManager {
 public:
 	std::vector<prop*> props;
-	bool RandomProduce(int dif);
-	void Produce();
+	bool RandomProduce();
+	void Produce(Player*pl);
 	void AddProp(prop* p);
-	void Update(Player* player);
+	void Update(BulletManager& b, EnemyManager& e, Player* player);
 	void Render();
 	void GC();
 };

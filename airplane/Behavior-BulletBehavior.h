@@ -5,8 +5,8 @@
 #include"core-Enemy.h"
 #include"core-Player.h"
 #include<tuple>
-//随机出外观
-int AppMatchEnemyType(bullet* b);
+//外观
+int AppMatchEnemyType(Enemy* e, bullet* b);
 //随机出攻击力和类型
 std::tuple<int, int, int>RandomAtkAndTypeAndRad(Enemy* e, bullet* b);
 //直线子弹vx vy

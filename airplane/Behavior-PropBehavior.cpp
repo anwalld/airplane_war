@@ -3,9 +3,75 @@
 #include"Behavior-PropBehavior.h"
 #include"system-engine.h"
 #include<unordered_map>
-int RandomType(prop* p) {
-	return RandomInt(0,2);
+#include"core-Player.h"
+std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
+{
+    double diff = AllGame::instance().coef;  // 难度(0~1)
+
+    double hpRatio = (double)player->NowHp / player->maxHp;
+    double HP_factor = 1 + (1 - hpRatio) * 2;     // 1~3，血越少越高
+
+    double Permanent_factor = 1 - 0.5 * diff;   // 难度越高 永久类越少
+    double Speed_factor = 1 + diff * 1.0;   // 难度越高 SpeedUp 越多
+    double DecreaseDif_factor = 1 - 0.7 * diff;   // 难度越高 降低难度越少
+    double Nerf_factor = 1 - 0.4 * diff;   // 清屏/炸弹/无敌减少
+
+    // ===== 0 永久类 =====
+    double w_shoot = 6 * Permanent_factor;
+    double w_damage = 5 * Permanent_factor;
+    double w_maxhp = 5 * Permanent_factor;
+    double w_speed = 4 * Speed_factor;
+
+    // ===== 1 一次性类 =====
+    double w_heal = 12 * HP_factor;
+    double w_clear = 15 * Nerf_factor;
+    double w_bomb = 18 * Nerf_factor;
+
+    // ===== 2 限时类 =====
+    double w_laser = 8;
+    double w_super = 12;
+    double w_decreaseDif = 5 * HP_factor * DecreaseDif_factor;
+    double w_invincible = 10 * HP_factor * Nerf_factor;
+
+    // ===== 权重数组 + 映射 =====
+    std::vector<double> all;
+    std::vector<std::pair<int, int>> mapping;
+
+    auto append = [&](const std::vector<double>& v, int big) {
+        for (int i = 0; i < v.size(); i++) {
+            all.push_back(v[i]);
+            mapping.push_back({ big, i });
+        }
+        };
+
+    // 0 永久类（4个）
+    append({ w_shoot, w_damage, w_maxhp, w_speed }, 0);
+
+    // 1 一次性类（3个）
+    append({ w_heal, w_clear, w_bomb }, 1);
+
+    // 2 限时类（4个）
+    append({ w_laser, w_super, w_decreaseDif, w_invincible }, 2);
+
+    // ===== 求总权重 =====
+    double total = 0;
+    for (double w : all) total += w;
+
+    double r = RandomDouble(0, total);  
+
+    std::pair<int, int>TypeAndNum = { 0,0 };
+    // ===== 按区间抽取 =====
+    for (int i = 0; i < all.size(); i++) {
+        if (r < all[i]) TypeAndNum=mapping[i];
+        r -= all[i];
+    }
+
+    TypeAndNum=mapping[0];
+	p->type = TypeAndNum.first;
+	p->num = TypeAndNum.second;
+	return TypeAndNum;
 }
+
 
 std::pair<double, double>RandomProduceCoord(prop* p) {
 	int screenX = AllGame::instance().ScreenX;
@@ -51,28 +117,78 @@ std::pair<double, double>PropMoveCoord(prop* p) {
 //道具的具体功能实现
 //0--永久加属性类
 //0.0减小飞机vShoot
-void PropEffect_DecreaseVShoot(Player* player, prop* p);
+void PropEffect_DecreaseVShoot(Player* player, prop* p) {
+    if (player->Vshoot > 1) {
+        player->Vshoot -= 1;
+	}
+    p->CD = 1.0 * 1000 / 120-1;
+	p->alive = false;
+}
 //0.1增加子弹伤害
-void PropEffect_IncreaseBulletDamage(Player* player, prop* p);
-//0.2增加子弹攻击力
-void PropEffect_IncreaseBulletAtk(Player* player, prop* p);
-//0.3增加飞机MaxHp
-void PropEffect_IncreasePlaneMaxHp(Player* player, prop* p);
-//0.4增加飞机speed
-void PropEffect_IncreasePlaneSpeed(Player* player, prop* p);
+void PropEffect_IncreaseBulletDamage(Player* player, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+	player->AddATK += 5;
+	p->alive = false;
+}
+//0.2增加飞机MaxHp
+void PropEffect_IncreasePlaneMaxHp(Player* player, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+    player->maxHp += 20;
+	p->alive = false;
+}
+//0.3增加飞机speed
+void PropEffect_IncreasePlaneSpeed(Player* player, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+	player->speed += 0.2 * 200 / 120;
+	p->alive = false;
+}
 //1--一次性道具类
 //1.0回血
-void PropEffect_Heal(Player* player, prop* p);
+void PropEffect_Heal(Player* player, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+	player->NowHp += 10;
+	p->alive = false;
+}
 //1.1清屏
-void PropEffect_ClearScreen(std::vector<bullet*>& bullets, std::vector<Enemy*>& enemies, prop* p);
-//1.2无敌(更改身份识别)
-void PropEffect_Invincible(Player* player, prop* p);
-//1.3全屏炸弹
-void PropEffect_FullScreenBomb(std::vector<Enemy*>& enemies,prop* p);
+void PropEffect_ClearScreen(BulletManager& b, EnemyManager& e, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+    for(auto& bullet : b.bullets) {
+        if(bullet->camp != p->camp) {
+            bullet->alive = false;
+        }
+	}
+    for(auto& enemy : e.enemies) {
+        if(enemy->camp != p->camp) {
+            enemy->alive = false;
+        }
+	}
+	p->alive = false;
+}
+//1.2全屏炸弹(爆炸cg)
+void PropEffect_FullScreenBomb(EnemyManager& e, prop* p) {
+    p->CD = 1.0 * 1000 / 120 - 1;
+    for(auto& enemy : e.enemies) {
+        if(enemy->camp != p->camp) {
+            enemy->NowHp -= 50;
+        }
+    }
+	p->alive = false;
+}
 //2--限时类
 //2.0激光武器
-void PropEffect_LaserWeapon(Player* player, prop* p);
+void PropEffect_LaserWeapon(Player* player, prop* p) {
+    player->Vshoot *= 0.1;
+    player->AddATK -= 5;
+}
 //2.1超级子弹
-void PropEffect_SuperBullet(Player* player, prop* p);
-//2.2难度暂时降低
-void PropEffect_DecreaseDif(prop* p);
+void PropEffect_SuperBullet(Player* player, prop* p) {
+	player->atk += 20;
+}
+//2.2临时减少杀敌数(降低难度)
+void PropEffect_DecreaseDif(prop* p) {
+	AllGame::instance().AllKill = (AllGame::instance().AllKill >= 100) ? AllGame::instance().AllKill - 100 : 0;
+}
+//2.3无敌(更改身份识别)(要求生成概率不高于10%)
+void PropEffect_Invincible(Player* player, prop* p) {
+    player->camp = 1;
+}

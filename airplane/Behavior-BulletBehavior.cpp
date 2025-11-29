@@ -16,10 +16,14 @@ static const int BaseTypeAtk[3][3] = {
 static const int BulletRad[3] = {
 	50,40,30
 };
-//随机出外观
-int AppMatchEnemyType(bullet* b) {
-	int ans = RandomInt(0, 2);
-	return ans;
+//外观
+int AppMatchEnemyType(Enemy* e, bullet* b) {
+	switch (e->type) {
+	case 0:return 0;
+	case 1:return 1;
+	case 2:return 2;
+	default:return 0;
+	}
 }
 
 //根据输入的input和a,b返回0,1,2三种类型

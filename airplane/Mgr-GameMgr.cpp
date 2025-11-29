@@ -1,6 +1,6 @@
 #include"Mgr-GameMgr.h"
 void GameManager::Update() {
-	propMgr.Update(playerMgr.players[0]);
+	propMgr.Update(bulletMgr,enemyMgr,playerMgr.players[0]);
 	bulletMgr.Update(playerMgr.players, enemyMgr.enemies);
 	playerMgr.Update();
 	enemyMgr.Update(playerMgr.players[0]);

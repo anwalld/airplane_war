@@ -18,5 +18,6 @@ public:
 	double vx=5;
 	double vy=2;
 	const double speed = 3.5;
+	bool alive = false;
 };
 #endif //AIRPLANE_WARS_ENEMY_H

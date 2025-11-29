@@ -16,7 +16,8 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 	for (Player* pp : p) {
 		if (ShouldFire(pp)) {
 			bullet* b = new bullet();
-			b->app = AppMatchEnemyType(b);
+			if (pp->Vshoot != 1)b->app = 3;
+			else b->app=4;
 			b->Type = RandomInt(0, 2);//玩家子弹类型随机
 			switch (b->Type) {
 			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
@@ -37,11 +38,11 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 	for (Enemy* ee : es) {
 		if (ShouldFire(ee)) {
 			bullet* b = new bullet();
-			b->app = AppMatchEnemyType(b);
 			auto [ATK, Type, Rad] = RandomAtkAndTypeAndRad(ee, b);
 			b->ATK = ATK;
 			b->Type = Type;
 			b->rad = Rad;
+			b->app = AppMatchEnemyType(ee,b);
 			switch (b->Type) {
 			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
 			case 1: { auto [vx, vy] = BiasBullet(b); b->vx = vx; b->vy = vy; break; }
@@ -57,25 +58,27 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 	}
 }
 void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enemy*>& es) {
-	// 1. 删除出界子弹
+	// 1. 删除出界子弹和死子弹
 	bullets.erase(
 		std::remove_if(bullets.begin(), bullets.end(),
 			[](bullet* b) {
-				if (IsOutRange(b->NowCoord)) {
+				if (IsOutRange(b->NowCoord)||!b->alive) {
 					AllKindDestroy(b);
 					return true;
 				}
-				return false;
+				else return false;
 			}),
 		bullets.end()
 	);
+	//2.生成子弹
+	void Produce(const std::vector<Player*>&p, const std::vector<Enemy*>&es);
 
-	// 2. 移动子弹
+	//3. 移动子弹
 	for (bullet* b : bullets) {
 		b->NowCoord = CalcuBulletMove(b,p[0]);
 	}
 
-	// 3. 碰撞检测
+	//4. 碰撞检测
 	for (bullet* b : bullets) {
 
 		if (b->camp == 0) {
@@ -98,7 +101,7 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 		}
 	}
 
-	// 4. 删除被击中死亡的子弹
+	//5. 删除被击中死亡的子弹
 	bullets.erase(
 		std::remove_if(bullets.begin(), bullets.end(),
 			[](bullet* b) {
@@ -106,7 +109,7 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 					AllKindDestroy(b);
 					return true;
 				}
-				return false;
+				else return false;
 			}),
 		bullets.end()
 	);
