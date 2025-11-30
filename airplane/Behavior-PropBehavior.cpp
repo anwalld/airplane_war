@@ -71,7 +71,39 @@ std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
 	p->num = TypeAndNum.second;
 	return TypeAndNum;
 }
-
+//根据道具类型和编号对应app
+int AppMatchProp(prop* p) {
+    switch (p->type) {
+    case 0: { // 永久类
+        switch (p->num) {
+        case 0: p->app = 0; break; // 减小vShoot
+        case 1: p->app = 1; break; // 增加子弹伤害
+        case 2: p->app = 2; break; // 增加MaxHp
+        case 3: p->app = 3; break; // 增加speed
+        }
+        break;
+    }
+    case 1: { // 一次性类
+        switch (p->num) {
+        case 0: p->app = 4; break; // 回血
+        case 1: p->app = 5; break; // 清屏
+        case 2: p->app = 6; break; // 全屏炸弹
+        }
+        break;
+    case 2: { // 限时类
+        switch (p->num) {
+        case 0: p->app = 7; break; // 激光武器
+        case 1: p->app = 8; break; // 超级子弹
+        case 2: p->app = 9; break; // 减少难度
+        case 3: p->app = 10; break; // 无敌
+        }
+        break;
+    }
+    default: p->app = 0; break;
+    }
+    }
+	return p->app;
+}
 
 std::pair<double, double>RandomProduceCoord(prop* p) {
 	int screenX = AllGame::instance().ScreenX;

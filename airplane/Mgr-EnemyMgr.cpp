@@ -4,6 +4,15 @@
 #include "Behavior-EnemyBehavior.h"
 #include "core-Enemy.h"
 #include"system-engine.h"
+EnemyManager::EnemyManager() {
+	LoadEnemyImages();
+}
+void EnemyManager::LoadEnemyImages() {
+	enemy_images.resize(3);//3�ֵл�ͼƬ
+	loadimage(&enemy_images[0], "");
+	loadimage(&enemy_images[1], "");
+	loadimage(&enemy_images[2], "");
+}
 static bool IsProduce() {
 	auto Lerp = [](double a, double b, double t) {
 		return a + (b - a) * t;
@@ -32,19 +41,12 @@ void EnemyManager::Produce() {
 
 void EnemyManager::Update(Player*p) {
 	if (IsProduce())EnemyManager::Produce();
-	enemies.erase(
-		std::remove_if(enemies.begin(), enemies.end(),
-			[](Enemy* e) {
-				if (e->NowHp <= 0||!e->alive) {
-					AllGame::instance().AllKill++;
-					e->alive = false;
-					AllKindDestroy(e);
-					return true;
-				}
-				else return false;
-			}), enemies.end()
-				);
 	for (auto& ee : enemies) {
+		if (IsOutRange(ee->coord) || ee->NowHp <= 0) {
+			if (ee->NowHp <= 0)AllGame::instance().AllKill++;
+			ee->alive = false;
+		}
+		if (ee->alive == false)continue;
 		ee->coord = CalculateEnemy(ee,p);
 	}
 }
@@ -52,7 +54,23 @@ void EnemyManager::Render() {
 
 }
 void EnemyManager::GC() {
+	//esayx
 
+
+
+
+
+	//kill
+	enemies.erase(
+		std::remove_if(enemies.begin(), enemies.end(),
+			[](Enemy* e) {
+				if (!e->alive) {
+					AllKindDestroy(e);
+					return true;
+				}
+				else return false;
+			}), enemies.end()
+				);
 }
 
 

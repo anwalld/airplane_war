@@ -19,6 +19,7 @@ public:
 	int rad = 100;
 	bool alive = true;
 	double vx=2, vy=2, speed=7;
+	int app = 0;
 	pair<double, double> NowCoord = {0,0};
 
 

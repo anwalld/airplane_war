@@ -6,6 +6,8 @@
 #include"Mgr-EnemyMgr.h"
 //生成道具的类型和编号
 std::pair<int, int> RandomTypeAndNum(Player* player, prop* p);
+//根据道具类型和编号对应app
+int AppMatchProp(prop* p);
 //随机生成坐标
 std::pair<double, double>RandomProduceCoord(prop* p);
 //计算落叶移动速度

@@ -4,10 +4,15 @@
 
 #include "core-Player.h"
 #include <vector>
+#include"easyx.h"
+#include"graphics.h"
 class PlayerManager {
 public:
 	std::vector<Player*> players;
+	std::vector<IMAGE> player_images;
 	bool IsProduce = false;
+	PlayerManager();
+	void LoadingPlayerImages();
 	void Produce();
 	void Update();
 	void Render();

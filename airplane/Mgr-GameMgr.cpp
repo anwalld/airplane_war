@@ -1,4 +1,13 @@
 #include"Mgr-GameMgr.h"
+GameManager::GameManager() {
+	LoadingImages();
+}
+void GameManager::LoadingImages() {
+	playerMgr.LoadingPlayerImages();
+	enemyMgr.LoadEnemyImages();
+	bulletMgr.LoadResources();
+	propMgr.LoadPropImages();
+}
 void GameManager::Update() {
 	propMgr.Update(bulletMgr,enemyMgr,playerMgr.players[0]);
 	bulletMgr.Update(playerMgr.players, enemyMgr.enemies);

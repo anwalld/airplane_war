@@ -4,6 +4,10 @@
 #include "core-plane.h"
 #include <utility>
 #include"core-Player.h"
+#include<vector>
+//根据皮肤更改玩家参数  0--高血量 1--高攻击 2--高速度 3--均衡  tuple--0:maxHp 1:AddATK 2:speed
+std::tuple<int, int, double> ChangePlayerParam(Player* p);
+
 //从easyx中读移动坐标
 std::pair<double, double>GetPlayerCoord(Player* p);
 

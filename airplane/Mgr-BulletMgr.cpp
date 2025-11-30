@@ -8,6 +8,24 @@
 #include "core-bullet.h"
 #include "core-Enemy.h"
 #include "core-Player.h"
+BulletManager::BulletManager() {
+	LoadResources();
+}
+void BulletManager::LoadResources() {
+	bulletImgs.resize(11);   // 10种子弹图片
+
+	loadimage(&bulletImgs[0], "");
+	loadimage(&bulletImgs[1], "");
+	loadimage(&bulletImgs[2], "");
+	loadimage(&bulletImgs[3], "");
+	loadimage(&bulletImgs[4], "");
+	loadimage(&bulletImgs[5], "");
+	loadimage(&bulletImgs[6], "");
+	loadimage(&bulletImgs[7], "");
+	loadimage(&bulletImgs[8], "");
+	loadimage(&bulletImgs[9], "");
+	loadimage(&bulletImgs[10], "");
+}
 
 void BulletManager::AddBullet(bullet* b) {
 	bullets.push_back(b);
@@ -16,9 +34,9 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 	for (Player* pp : p) {
 		if (ShouldFire(pp)) {
 			bullet* b = new bullet();
-			if (pp->Vshoot != 1)b->app = 3;
-			else b->app=4;
-			b->Type = RandomInt(0, 2);//玩家子弹类型随机
+			if (pp->Vshoot != 1)b->app = 9;//玩家--直线ans斜线子弹
+			else b->app=10;//玩家--激光子弹
+			b->Type = (RandomInt(0, 99)<=90?0:1);//玩家子弹类型随机
 			switch (b->Type) {
 			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
 			case 1: { auto [vx, vy] = BiasBullet(b); b->vx = vx; b->vy = vy; break; }
@@ -58,29 +76,21 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 	}
 }
 void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enemy*>& es) {
-	// 1. 删除出界子弹和死子弹
-	bullets.erase(
-		std::remove_if(bullets.begin(), bullets.end(),
-			[](bullet* b) {
-				if (IsOutRange(b->NowCoord)||!b->alive) {
-					AllKindDestroy(b);
-					return true;
-				}
-				else return false;
-			}),
-		bullets.end()
-	);
 	//2.生成子弹
 	void Produce(const std::vector<Player*>&p, const std::vector<Enemy*>&es);
 
 	//3. 移动子弹
-	for (bullet* b : bullets) {
+	for (bullet* b : bullets) {		
+		if (IsOutRange(b->NowCoord)) {
+			b->alive = false;
+		}
+		if (b->alive == false) continue;
 		b->NowCoord = CalcuBulletMove(b,p[0]);
 	}
 
 	//4. 碰撞检测
 	for (bullet* b : bullets) {
-
+		if (b->alive == false) continue;
 		if (b->camp == 0) {
 			// 玩家子弹 → 打敌机
 			for (Enemy* e : es) {
@@ -101,7 +111,18 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 		}
 	}
 
-	//5. 删除被击中死亡的子弹
+
+}
+void BulletManager::Render() {
+
+}
+void BulletManager::GC() {
+	//easyx
+
+
+
+
+	//kill
 	bullets.erase(
 		std::remove_if(bullets.begin(), bullets.end(),
 			[](bullet* b) {
@@ -113,10 +134,4 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 			}),
 		bullets.end()
 	);
-}
-void BulletManager::Render() {
-
-}
-void BulletManager::GC() {
-
 }

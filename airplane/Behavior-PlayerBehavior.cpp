@@ -2,6 +2,33 @@
 #include "system-engine.h"
 #include"easyx.h"
 #include"graphics.h"
+//根据皮肤更改玩家参数  0--高血量 1--高攻击 2--高速度 3--均衡  tuple--0:maxHp 1:AddATK 2:speed
+std::tuple<int,int,double> ChangePlayerParam(Player* p) {
+    switch (p->skin) {
+    case 0: {
+        p->maxHp += 50;
+        break;
+    }
+    case 1: {
+        p->AddATK += 5;
+        break;
+    }
+    case 2: {
+        p->speed += 1.0 * 50 / 120;
+        break;
+    }
+    case 3: {
+        p->maxHp += 20;
+        p->AddATK += 2;
+        p->speed += 1.0 * 20 / 120;
+        break;
+    }
+    default:
+		break;
+    }
+	return { p->maxHp, p->AddATK,p->speed };
+}
+
 std::pair<double, double>ProducePlayer(Player* p) {
 	int screenX = AllGame::instance().ScreenX;
 	int screenY = AllGame::instance().ScreenY;

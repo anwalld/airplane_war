@@ -7,9 +7,13 @@
 #include<unordered_map>
 #include"Mgr-BulletMgr.h"
 #include"Mgr-EnemyMgr.h"
+#include"easyx.h"
 class PropManager {
 public:
 	std::vector<prop*> props;
+	std::vector<IMAGE> prop_images;
+	PropManager();
+	void LoadPropImages();
 	bool RandomProduce();
 	void Produce(Player*pl);
 	void AddProp(prop* p);

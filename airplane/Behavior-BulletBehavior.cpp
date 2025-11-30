@@ -19,10 +19,30 @@ static const int BulletRad[3] = {
 //外观
 int AppMatchEnemyType(Enemy* e, bullet* b) {
 	switch (e->type) {
-	case 0:return 0;
-	case 1:return 1;
-	case 2:return 2;
-	default:return 0;
+	case 0: {//小怪
+		switch (b->Type) {
+		case 0: return 0;//小怪-直线
+		case 1: return 1;//小怪-斜线
+		case 2: return 2;//小怪-跟踪
+		}
+		break;
+	}
+	case 1: {//精英怪
+		switch (b->Type) {
+		case 0: return 3;//精英怪-直线
+		case 1: return 4;//精英怪-斜线
+		case 2: return 5;//精英怪-跟踪
+		}
+		break;
+	case 2: {//boss
+		switch (b->Type) {
+		case 0: return 6;//boss-直线
+		case 1: return 7;//boss-斜线
+		case 2: return 8;//boss-跟踪
+		}
+		break;
+	}
+	}
 	}
 }
 
