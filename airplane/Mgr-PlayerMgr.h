@@ -9,7 +9,6 @@
 class PlayerManager {
 public:
 	std::vector<Player*> players;
-	std::vector<IMAGE> player_images;
 	bool IsProduce = false;
 	PlayerManager();
 	void LoadingPlayerImages();

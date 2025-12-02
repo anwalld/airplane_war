@@ -83,7 +83,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,6 +117,7 @@
     <ClCompile Include="airplane\Behavior-PlaneBehavior.cpp" />
     <ClCompile Include="airplane\Behavior-PlayerBehavior.cpp" />
     <ClCompile Include="airplane\Behavior-PropBehavior.cpp" />
+    <ClCompile Include="airplane\main.cpp" />
     <ClCompile Include="airplane\Mgr-BulletMgr.cpp" />
     <ClCompile Include="airplane\Mgr-EnemyMgr.cpp" />
     <ClCompile Include="airplane\Mgr-GameMgr.cpp" />

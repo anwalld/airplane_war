@@ -5,23 +5,6 @@
 #include"system-system.h"
 #include "core-Player.h"
 
-PropManager::PropManager() {
-	LoadPropImages();
-}
-void PropManager::LoadPropImages() {
-	prop_images.reserve(11);			//加载道具图片
-	loadimage(&prop_images[0], ""); //道具0
-	loadimage(&prop_images[1], ""); //道具1
-	loadimage(&prop_images[2], ""); //道具2
-	loadimage(&prop_images[3], ""); //道具3
-	loadimage(&prop_images[4], ""); //道具4
-	loadimage(&prop_images[5], ""); //道具5
-	loadimage(&prop_images[6], ""); //道具6
-	loadimage(&prop_images[7], ""); //道具7
-	loadimage(&prop_images[8], ""); //道具8
-	loadimage(&prop_images[9], ""); //道具9
-	loadimage(&prop_images[10], ""); //道具10
-}
 void PropManager::Produce(Player*pl) {
 		prop* p = new prop;
 		std::pair<int, int>TypeAndNum = RandomTypeAndNum(pl, p);
