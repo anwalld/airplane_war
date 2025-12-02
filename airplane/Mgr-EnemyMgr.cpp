@@ -4,15 +4,6 @@
 #include "Behavior-EnemyBehavior.h"
 #include "core-Enemy.h"
 #include"system-engine.h"
-EnemyManager::EnemyManager() {
-	LoadEnemyImages();
-}
-void EnemyManager::LoadEnemyImages() {
-	enemy_images.resize(3);//3�ֵл�ͼƬ
-	loadimage(&enemy_images[0], "");
-	loadimage(&enemy_images[1], "");
-	loadimage(&enemy_images[2], "");
-}
 static bool IsProduce() {
 	auto Lerp = [](double a, double b, double t) {
 		return a + (b - a) * t;

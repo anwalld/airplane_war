@@ -1,7 +1,7 @@
 #include "behavior-PlayerBehavior.h"
 #include "system-engine.h"
-#include"easyx.h"
-#include"graphics.h"
+#include "easyx.h"
+#include "graphics.h"
 //根据皮肤更改玩家参数  0--高血量 1--高攻击 2--高速度 3--均衡  tuple--0:maxHp 1:AddATK 2:speed
 std::tuple<int,int,double> ChangePlayerParam(Player* p) {
     switch (p->skin) {
@@ -34,19 +34,20 @@ std::pair<double, double>ProducePlayer(Player* p) {
 	int screenY = AllGame::instance().ScreenY;
 
 	// x = 屏幕中点
-    double x = screenX / 2;
+    double x = screenX / 2.0;
 
 	// y = 屏幕底部往上 1/8
-    double y = (screenY * 7) / 8;
+    double y = (screenY * 7) / 8.0;
 
 	return { x,y };
 }
-std::pair<double, double> GetPlayerCoord(Player* p) {
-    ExMessage msg;
-    // 同时监听鼠标 + 键盘
-    while (peekmessage(&msg, EM_MOUSE | EM_KEY))
+std::pair<double, double> GetPlayerCoord(Player* p)
+{
+    ExMessage msg{};
+
+    // 使用单次 peekmessage 检查鼠标和键盘事件，避免重复调用 peekmessage
+    while (peekmessage(&msg, EX_MOUSE | EX_KEY)) 
     {
-        // 鼠标移动：更新玩家坐标
         if (msg.message == WM_MOUSEMOVE)
         {
             double targetX = msg.x;
@@ -61,13 +62,12 @@ std::pair<double, double> GetPlayerCoord(Player* p) {
             nowY += (targetY - nowY) * smooth;
 
             p->coord.first = nowX;
-            p->coord.second =nowY;
-        }
+            p->coord.second = nowY;
+        }       
 
-        // 监听 ESC（键盘）
         if (msg.message == WM_KEYDOWN && msg.vkcode == VK_ESCAPE)
         {
-             AllGame::instance().Stop = true;
+            AllGame::instance().Stop = true;
         }
     }
 

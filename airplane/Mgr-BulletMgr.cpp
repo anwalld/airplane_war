@@ -8,25 +8,6 @@
 #include "core-bullet.h"
 #include "core-Enemy.h"
 #include "core-Player.h"
-BulletManager::BulletManager() {
-	LoadResources();
-}
-void BulletManager::LoadResources() {
-	bulletImgs.resize(11);   // 10ÖÖ×Óµ¯Í¼Æ¬
-
-	loadimage(&bulletImgs[0], "");
-	loadimage(&bulletImgs[1], "");
-	loadimage(&bulletImgs[2], "");
-	loadimage(&bulletImgs[3], "");
-	loadimage(&bulletImgs[4], "");
-	loadimage(&bulletImgs[5], "");
-	loadimage(&bulletImgs[6], "");
-	loadimage(&bulletImgs[7], "");
-	loadimage(&bulletImgs[8], "");
-	loadimage(&bulletImgs[9], "");
-	loadimage(&bulletImgs[10], "");
-}
-
 void BulletManager::AddBullet(bullet* b) {
 	bullets.push_back(b);
 }

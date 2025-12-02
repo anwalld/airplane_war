@@ -10,10 +10,6 @@
 class BulletManager {
 public:
 	std::vector<bullet*> bullets;
-	std::vector<IMAGE> bulletImgs;  // ×ÊÔ´³Ø
-
-	BulletManager();
-	void LoadResources();
 	void Produce(const std::vector<Player*>& p, const std::vector<Enemy*>& es);
 	void AddBullet(bullet* b);
 	void Update(const std::vector<Player*>& p, const std::vector<Enemy*>& es);

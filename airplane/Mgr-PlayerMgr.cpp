@@ -4,14 +4,7 @@
 #include"system-view.h"
 #include"system-system.h"
 PlayerManager::PlayerManager(){
-	LoadingPlayerImages();
-}
-void PlayerManager::LoadingPlayerImages() {
-	player_images.reserve(4);			//加载玩家飞机图片
-	loadimage(&player_images[0], ""); //玩家飞机1
-	loadimage(&player_images[1], ""); //玩家飞机2
-	loadimage(&player_images[2], ""); //玩家飞机3
-	loadimage(&player_images[3], ""); //玩家飞机4
+	PlayerManager::Produce();
 }
 void PlayerManager::Produce() {
 	Player* player = new Player();
@@ -23,13 +16,20 @@ void PlayerManager::Produce() {
 	players.push_back(player);
 }
 void PlayerManager::Update() {
-	if (PlayerManager::IsProduce == false) {
-		PlayerManager::Produce();
-		IsProduce = true;
-	}
-	for (auto& player : players) {
-		if (player->NowHp <= 0) { AllKindDestroy(player); }
+	// Iterate with iterator to safely delete and erase dead players without accessing dangling pointers
+	for (auto it = players.begin(); it != players.end();) {
+		Player* player = *it;
+		if (!player) {
+			it = players.erase(it);
+			continue;
+		}
+		if (player->NowHp <= 0) {
+			AllKindDestroy(player);
+			it = players.erase(it);
+			continue;
+		}
 		player->coord = GetPlayerCoord(player);
+		++it;
 	}
 }
 void PlayerManager::Render() {

@@ -15,8 +15,6 @@ public:
 	EnemyManager enemyMgr;
 	BulletManager bulletMgr;
 	PropManager propMgr;
-	GameManager();
-	void LoadingImages();
 	void Update();
 	void Render();
 	void CG();
