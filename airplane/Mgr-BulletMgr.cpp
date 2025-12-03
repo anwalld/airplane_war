@@ -1,10 +1,9 @@
 #include "Behavior-PlaneBehavior.h"
 
 #include "Behavior-BulletBehavior.h"
-
 #include "Mgr-BulletMgr.h"
 #include "system-system.h"
-
+#include"Res-GameRes.h"
 #include "core-bullet.h"
 #include "core-Enemy.h"
 #include "core-Player.h"
@@ -95,8 +94,20 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 
 }
 void BulletManager::Render() {
+	Resourse res;
+	for (const bullet* b : bullets) {
+		int idx = b->app;
+		if (idx < 0 || idx >= res.bulletImgs.size())
+			continue; // ·ÀÖ¹Ô½½ç
+
+		int x = (int)(b->NowCoord.first - 1.0 * b->rad / 2);
+		int y = (int)(b->NowCoord.second - 1.0 * b->rad / 2);
+
+		drawAlpha(x, y, &res.bulletImgs[idx]);
+	}
 
 }
+
 void BulletManager::GC() {
 	//easyx
 

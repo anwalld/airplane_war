@@ -42,6 +42,17 @@ void EnemyManager::Update(Player*p) {
 	}
 }
 void EnemyManager::Render() {
+	Resourse res;
+	for (const auto& ee : enemies) {
+		int idx = ee->type;
+		if (idx < 0 || idx >= res.EnemyImgs.size())
+			continue;
+
+		int x = (int)(ee->coord.first - 1.0 * ee->rad / 2);
+		int y = (int)(ee->coord.second - 1.0 * ee->rad / 2);
+
+		drawAlpha(x, y, &res.EnemyImgs[idx]);
+	}
 
 }
 void EnemyManager::GC() {

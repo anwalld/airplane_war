@@ -8,6 +8,8 @@
 #include"Mgr-BulletMgr.h"
 #include"Mgr-EnemyMgr.h"
 #include"easyx.h"
+#include"Res-GameRes.h"
+#include"system-system.h"
 class PropManager {
 public:
 	std::vector<prop*> props;

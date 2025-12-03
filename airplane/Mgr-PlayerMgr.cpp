@@ -16,23 +16,24 @@ void PlayerManager::Produce() {
 	players.push_back(player);
 }
 void PlayerManager::Update() {
-	// Iterate with iterator to safely delete and erase dead players without accessing dangling pointers
-	for (auto it = players.begin(); it != players.end();) {
-		Player* player = *it;
-		if (!player) {
-			it = players.erase(it);
-			continue;
+	for (Player* player:players) {
+		if (player->NowHp >= 0) {
+			auto [x, y] = GetPlayerCoord(player);
+			player->coord.first = x;
+			player->coord.second = y;
 		}
-		if (player->NowHp <= 0) {
-			AllKindDestroy(player);
-			it = players.erase(it);
-			continue;
-		}
-		player->coord = GetPlayerCoord(player);
-		++it;
 	}
 }
 void PlayerManager::Render() {
+	Resourse res;
+	int idx = players[0]->skin;
+	if (idx >= 0 && idx < res.PlayerImgs.size()) {
+		int x = (int)(players[0]->coord.first - 1.0 * players[0]->rad / 2);
+		int y = (int)(players[0]->coord.second - 1.0 * players[0]->rad / 2);
+
+		putimage(x, y, &res.PlayerImgs[idx]);
+	}
+
 
 }
 void PlayerManager::GC() {

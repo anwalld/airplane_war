@@ -102,6 +102,18 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 
 }
 void PropManager::Render() {
+	Resourse res;
+	for (const prop* pp : props) {
+		int idx = pp->app;
+		if (idx < 0 || idx >= res.PropImgs.size())
+			continue; // ·ÀÖ¹Ô½½ç
+
+		int x = (int)(pp->NowCoord.first - 1.0 * pp->rad / 2);
+		int y = (int)(pp->NowCoord.second - 1.0 * pp->rad / 2);
+
+		putimage(x, y, &res.PropImgs[idx]);
+	}
+
 
 }
 void PropManager::GC() {

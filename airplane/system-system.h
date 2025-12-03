@@ -5,6 +5,8 @@
 #include<time.h>
 #include<Windows.h>
 #include <utility>
+#include"easyx.h"
+#include"graphics.h"
 using std::pair;
 //计算移动后坐标
 pair<double, double> SystemMove(pair<double, double> NowCoord, double vx, double vy);
@@ -26,4 +28,6 @@ void lock120fps();
 int RandomInt(int a, int b);
 //生成a到b之间的随机小数
 double RandomDouble(double a, double b);
+
+void drawAlpha(int x, int y, IMAGE* img);
 #endif //AIRPLANE_WARS_SYSTEM_H

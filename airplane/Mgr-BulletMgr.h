@@ -7,6 +7,7 @@
 #include"Behavior-PlaneBehavior.h"
 #include"easyx.h"
 #include "graphics.h"
+#include"Res-GameRes.h"
 class BulletManager {
 public:
 	std::vector<bullet*> bullets;

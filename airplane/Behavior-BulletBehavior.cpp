@@ -44,6 +44,7 @@ int AppMatchEnemyType(Enemy* e, bullet* b) {
 	}
 	}
 	}
+	return 0;
 }
 
 //根据输入的input和a,b返回0,1,2三种类型

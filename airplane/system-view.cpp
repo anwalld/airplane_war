@@ -4,8 +4,11 @@
 #include"system-engine.h"
 #include"Mgr-GameMgr.h"
 #include"system-system.h"
+#include<tchar.h>
 int WAITING = 100;//等待尺寸数值
 int oper = 0;
+
+
 
 void MenuView() {
 	//新建窗口	
@@ -19,8 +22,7 @@ void MenuView() {
 	//设置标题
 	settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
 	settextcolor(BLACK);//不一定是黑色
-	outtextxy(625, 60, _T("\nWAR LIGHTING"));
-	//设置选项
+	outtextxy(625, 60, _T("WARLIGHTING"));
 	outtextxy(50, 0, _T("开始游戏"));
 	setfillcolor(0x000000);//颜色待定
 	fillrectangle(830, 280, 1090, 360);//位置待定
@@ -45,7 +47,7 @@ void MenuView() {
 			{
 				if (MsgInMenu.x >= 830 && MsgInMenu.x <= 1090 && MsgInMenu.y >= 280 && MsgInMenu.y <= 360)//1.点击开始游戏
 				{
-					ChoosePlane();
+					int a = ChoosePlane();
 				}
 				else if (MsgInMenu.x >= 830 && MsgInMenu.x <= 1090 && MsgInMenu.y >= 430 && MsgInMenu.y <= 510)//2.点击设置
 
@@ -60,7 +62,6 @@ void MenuView() {
 					settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
 					settextcolor(BLACK);//不一定是黑色
 					outtextxy(625, 60, _T("\nWAR LIGHTING"));
-					//设置选项
 					outtextxy(50, 0, _T("开始游戏"));
 					setfillcolor(0x000000);//颜色待定
 					fillrectangle(830, 280, 1090, 360);//位置待定
@@ -359,7 +360,7 @@ int ChoosePlane() {
 
 
 	}
-
+	AllGame::instance().skin = PlaneIndex;
 
 
 
@@ -370,21 +371,39 @@ int ChoosePlane() {
 					实现战机选择 数值和立绘展示 以及战机选择
 					-----即战备界面------*/
 
-void PrintGameScene() {}//载入战机图片 bgm 和飞机的数值
+void PrintGameScene(const GameManager& g) {
+	cleardevice();
+	/*IMAGE GameBackGround;
+	loadimage(&GameBackGround, "", 1920, 1080);
+	putimage(0, 0, &GameBackGround);*/
+	int NowHp = g.playerMgr.players[0]->NowHp;
+	setfillcolor(0x4f07db);
+	fillrectangle(0, 1030, 480 * (NowHp) / 100, 1070);
+
+
+}//载入战机图片 bgm 和飞机的数值
 
 void GameOverView() {}//展示得分
 
 void GameView() {
+	MenuView();
 
 
-
-
+	//双缓冲
+	IMAGE buf(1920, 1080);
+	SetWorkingImage(&buf);
 	GameManager g;
 	while (g.playerMgr.players[0]->NowHp > 0) {
+		cleardevice();
 		g.Update();
 		g.Render();
 		g.CG();
+
+		SetWorkingImage(NULL);
+		putimage(0, 0, &buf);
+		SetWorkingImage(&buf);
+
 		lock120fps();
 	}
-	
+
 }

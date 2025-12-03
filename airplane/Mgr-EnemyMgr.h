@@ -7,6 +7,7 @@
 #include "system-system.h"
 #include "easyx.h"
 #include "graphics.h"
+#include"Res-GameRes.h"
 class EnemyManager {
 public:
 	std::vector<Enemy*> enemies;

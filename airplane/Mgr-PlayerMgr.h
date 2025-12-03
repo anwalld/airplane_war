@@ -6,11 +6,12 @@
 #include <vector>
 #include"easyx.h"
 #include"graphics.h"
+#include"Res-GameRes.h"
+#include"system-system.h"
 class PlayerManager {
 public:
 	std::vector<Player*> players;
 	PlayerManager();
-	void LoadingPlayerImages();
 	void Produce();
 	void Update();
 	void Render();

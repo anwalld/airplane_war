@@ -123,6 +123,7 @@
     <ClCompile Include="airplane\Mgr-GameMgr.cpp" />
     <ClCompile Include="airplane\Mgr-PlayerMgr.cpp" />
     <ClCompile Include="airplane\Mgr-PropMgr.cpp" />
+    <ClCompile Include="airplane\Res-GameRes.cpp" />
     <ClCompile Include="airplane\system-engine.cpp" />
     <ClCompile Include="airplane\system-system.cpp" />
     <ClCompile Include="airplane\system-view.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="airplane\Mgr-GameMgr.h" />
     <ClInclude Include="airplane\Mgr-PlayerMgr.h" />
     <ClInclude Include="airplane\Mgr-PropMgr.h" />
+    <ClInclude Include="airplane\Res-GameRes.h" />
     <ClInclude Include="airplane\system-engine.h" />
     <ClInclude Include="airplane\system-system.h" />
     <ClInclude Include="airplane\system-view.h" />

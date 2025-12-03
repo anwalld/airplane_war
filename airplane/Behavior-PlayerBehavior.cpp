@@ -2,6 +2,10 @@
 #include "system-engine.h"
 #include "easyx.h"
 #include "graphics.h"
+int ChangePlayerSkin(Player* p) {
+    p->skin = AllGame::instance().skin;
+    return p->skin;
+}
 //根据皮肤更改玩家参数  0--高血量 1--高攻击 2--高速度 3--均衡  tuple--0:maxHp 1:AddATK 2:speed
 std::tuple<int,int,double> ChangePlayerParam(Player* p) {
     switch (p->skin) {

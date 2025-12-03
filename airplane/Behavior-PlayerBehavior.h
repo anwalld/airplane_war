@@ -5,6 +5,9 @@
 #include <utility>
 #include"core-Player.h"
 #include<vector>
+//根据选择的皮肤改变玩家皮肤编号
+int ChangePlayerSkin(Player* p);
+
 //根据皮肤更改玩家参数  0--高血量 1--高攻击 2--高速度 3--均衡  tuple--0:maxHp 1:AddATK 2:speed
 std::tuple<int, int, double> ChangePlayerParam(Player* p);
 

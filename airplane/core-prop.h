@@ -14,7 +14,7 @@ class plane;
 class prop {
 public:
 	int type = 0, num = 0;//type--大类 num--具体编号
-	int CD = 5;
+	double CD = 5;
 	int camp = 0;//阵营0表示为玩家阵营
 	int rad = 100;
 	bool alive = true;
