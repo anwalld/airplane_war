@@ -72,50 +72,47 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 		}
 	}
 		}
-	for (auto& [p, t] : UsingProp) {
+	for (auto it = UsingProp.begin(); it != UsingProp.end(); ) {
+		prop* p = it->first;
+		int t = it->second;
+
 		if (AllGame::instance().GameTime - t >= p->CD) {
+
 			switch (p->num) {
-			case 0: {
-				player->Vshoot +=9;
-				player->AddATK += 5;
-				break;
+			case 0: { player->Vshoot += 9; player->AddATK += 5; break; }
+			case 1: { player->atk -= 20; break; }
+			case 2: { AllGame::instance().AllKill += 100; break; }
+			case 3: { player->camp = 0; break; }
 			}
-			case 1: {
-				player->atk -= 20;
-				break;
-			}
-			case 2: {
-				AllGame::instance().AllKill += 100;
-				break;
-			}
-			case 3: {
-				player->camp = 0;
-				break;
-			}
-			default: { break; }
-			}
-			UsingProp.erase(p);
+
 			p->alive = false;
+			it = UsingProp.erase(it);   // ← 正确写法
+		}
+		else {
+			++it;
 		}
 	}
-		
-
-}
+	}
 void PropManager::Render() {
 	Resourse res;
-	for (const prop* pp : props) {
-		int idx = pp->app;
+
+	for (const prop* p : props) {
+		int idx = p->app;
 		if (idx < 0 || idx >= res.PropImgs.size())
-			continue; // 防止越界
+			continue;
 
-		int x = (int)(pp->NowCoord.first - 1.0 * pp->rad / 2);
-		int y = (int)(pp->NowCoord.second - 1.0 * pp->rad / 2);
+		// 道具可视尺寸 = 判定圆直径
+		int w = p->rad * 2;
+		int h = p->rad * 2;
 
-		putimage(x, y, &res.PropImgs[idx]);
+		// 中心点坐标 → 左上角
+		int x = (int)(p->NowCoord.first - p->rad);
+		int y = (int)(p->NowCoord.second - p->rad);
+
+		drawAlphaResize(x, y, w, h, &res.PropImgs[idx]);
 	}
-
-
 }
+
 void PropManager::GC() {
 	//easyx
 

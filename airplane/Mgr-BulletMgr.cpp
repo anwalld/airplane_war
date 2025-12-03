@@ -57,7 +57,7 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 }
 void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enemy*>& es) {
 	//2.生成子弹
-	void Produce(const std::vector<Player*>&p, const std::vector<Enemy*>&es);
+	Produce(p,es);
 
 	//3. 移动子弹
 	for (bullet* b : bullets) {		
@@ -95,18 +95,24 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 }
 void BulletManager::Render() {
 	Resourse res;
+
 	for (const bullet* b : bullets) {
 		int idx = b->app;
 		if (idx < 0 || idx >= res.bulletImgs.size())
-			continue; // 防止越界
+			continue;
 
-		int x = (int)(b->NowCoord.first - 1.0 * b->rad / 2);
-		int y = (int)(b->NowCoord.second - 1.0 * b->rad / 2);
+		// 子弹可视尺寸 = 判定圆直径
+		int w = b->rad * 2;
+		int h = b->rad * 2;
 
-		drawAlpha(x, y, &res.bulletImgs[idx]);
+		// 中心点坐标 → 左上角
+		int x = (int)(b->NowCoord.first - b->rad);
+		int y = (int)(b->NowCoord.second - b->rad);
+
+		drawAlphaResize(x, y, w, h, &res.bulletImgs[idx]);
 	}
-
 }
+
 
 void BulletManager::GC() {
 	//easyx

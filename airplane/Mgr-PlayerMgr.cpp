@@ -26,16 +26,23 @@ void PlayerManager::Update() {
 }
 void PlayerManager::Render() {
 	Resourse res;
-	int idx = players[0]->skin;
-	if (idx >= 0 && idx < res.PlayerImgs.size()) {
-		int x = (int)(players[0]->coord.first - 1.0 * players[0]->rad / 2);
-		int y = (int)(players[0]->coord.second - 1.0 * players[0]->rad / 2);
+	Player* p = players[0];
 
-		putimage(x, y, &res.PlayerImgs[idx]);
-	}
+	int idx = p->skin;
+	if (idx < 0 || idx >= res.PlayerImgs.size())
+		return;
 
+	// 贴图目标大小 = 玩家判定圆直径
+	int w = p->rad * 2;
+	int h = p->rad * 2;
 
+	// 中心点坐标 → 左上角
+	int x = (int)(p->coord.first - p->rad);
+	int y = (int)(p->coord.second - p->rad);
+
+	drawAlphaResize(x, y, w, h, &res.PlayerImgs[idx]);
 }
+
 void PlayerManager::GC() {
 
 }

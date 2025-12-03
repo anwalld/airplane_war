@@ -100,4 +100,60 @@ void drawAlpha(int  picture_x, int picture_y, IMAGE* picture) //x为载入图片的X坐
 		}
 	}
 }
+//resize大小并带透明度绘制
+void drawAlphaResize(int x, int y, int w, int h, IMAGE* srcImg)
+{
+    if (!srcImg) return;
+
+    int srcW = srcImg->getwidth();
+    int srcH = srcImg->getheight();
+    if (srcW == 0 || srcH == 0) return;
+
+    DWORD* dst = GetImageBuffer();
+    DWORD* src = GetImageBuffer(srcImg);
+
+    int graphW = getwidth();
+    int graphH = getheight();
+
+    // 双线性缩放比例
+    double scaleX = (double)srcW / w;
+    double scaleY = (double)srcH / h;
+
+    for (int iy = 0; iy < h; iy++)
+    {
+        int sy = (int)(iy * scaleY);
+        if (sy >= srcH) sy = srcH - 1;
+
+        for (int ix = 0; ix < w; ix++)
+        {
+            int sx = (int)(ix * scaleX);
+            if (sx >= srcW) sx = srcW - 1;
+
+            int srcIdx = sx + sy * srcW;
+
+            int sa = ((src[srcIdx] & 0xff000000) >> 24);
+            if (sa == 0) continue;
+
+            int sr = (src[srcIdx] >> 16) & 0xff;
+            int sg = (src[srcIdx] >> 8) & 0xff;
+            int sb = (src[srcIdx]) & 0xff;
+
+            int dx = x + ix;
+            int dy = y + iy;
+            if (dx < 0 || dx >= graphW || dy < 0 || dy >= graphH) continue;
+
+            int dstIdx = dx + dy * graphW;
+
+            int dr = (dst[dstIdx] >> 16) & 0xff;
+            int dg = (dst[dstIdx] >> 8) & 0xff;
+            int db = (dst[dstIdx]) & 0xff;
+
+            int r = (sr * sa + dr * (255 - sa)) / 255;
+            int g = (sg * sa + dg * (255 - sa)) / 255;
+            int b = (sb * sa + db * (255 - sa)) / 255;
+
+            dst[dstIdx] = (r << 16) | (g << 8) | b;
+        }
+    }
+}
 

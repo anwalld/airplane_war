@@ -48,10 +48,14 @@ void EnemyManager::Render() {
 		if (idx < 0 || idx >= res.EnemyImgs.size())
 			continue;
 
-		int x = (int)(ee->coord.first - 1.0 * ee->rad / 2);
-		int y = (int)(ee->coord.second - 1.0 * ee->rad / 2);
+		int w = ee->rad * 2;
+		int h = ee->rad * 2;
 
-		drawAlpha(x, y, &res.EnemyImgs[idx]);
+		int x = (int)(ee->coord.first - ee->rad);
+		int y = (int)(ee->coord.second - ee->rad);
+
+		drawAlphaResize(x, y, w, h, &res.EnemyImgs[idx]);
+
 	}
 
 }

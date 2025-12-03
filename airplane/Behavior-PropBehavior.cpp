@@ -62,11 +62,11 @@ std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
     std::pair<int, int>TypeAndNum = { 0,0 };
     // ===== 按区间抽取 =====
     for (int i = 0; i < all.size(); i++) {
-        if (r < all[i]) TypeAndNum=mapping[i];
+        if (r < all[i]) {
+            TypeAndNum = mapping[i]; break;
+        }
         r -= all[i];
     }
-
-    TypeAndNum=mapping[0];
 	p->type = TypeAndNum.first;
 	p->num = TypeAndNum.second;
 	return TypeAndNum;

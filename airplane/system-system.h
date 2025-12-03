@@ -30,4 +30,6 @@ int RandomInt(int a, int b);
 double RandomDouble(double a, double b);
 
 void drawAlpha(int x, int y, IMAGE* img);
+
+void drawAlphaResize(int x, int y, int w, int h, IMAGE* srcImg);
 #endif //AIRPLANE_WARS_SYSTEM_H
