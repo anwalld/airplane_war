@@ -1,5 +1,6 @@
 #include"Res-GameRes.h"
 Resourse::Resourse() {
+	loadimage(&GameBG, "image\\ui\\bgp.png", 1920, 1080);
 	Resourse::loadingPlayer();
 	Resourse::loadingEnemy();
 	Resourse::loadingBullet();
@@ -30,7 +31,7 @@ void Resourse::loadingBullet() {
 	loadimage(&bulletImgs[6], "image\\bullet\\6.png");
 	loadimage(&bulletImgs[7], "image\\bullet\\7.jpg");
 	loadimage(&bulletImgs[8], "image\\bullet\\8.jpg");
-	loadimage(&bulletImgs[9], "image\\bullet\\9.jpg");
+	loadimage(&bulletImgs[9], "image\\bullet\\9.png");
 	loadimage(&bulletImgs[10], "image\\bullet\\10.jpg");
 }
 void Resourse::loadingProp() {

@@ -63,21 +63,37 @@ std::pair<int, int>RandomModelAndTypeWithCoef(Enemy* e) {
 // 根据 Type 匹配半径
 int RadMatchType(Enemy* e) {
     switch (e->type) {
-    case 0: e->rad = 22; return 22;
-    case 1: e->rad = 30; return 30;
-    case 2: e->rad = 35; return 35;
+    case 0: {
+        e->rad = 28; 
+        break;
     }
-    return 0;
+    case 1: {
+        e->rad = 40; 
+        break;
+    }
+    case 2: {
+        e->rad = 55;
+        break;
+    }
+    }
+    return e->rad;
 }
 
 // 根据 Type 匹配最大 HP
 int MaxHpMatchType(Enemy* e) {
     switch (e->type) {
-    case 0: e->maxHp = 20; return 20;
-    case 1: e->maxHp = 45; return 45;
-    case 2: e->maxHp = 135; return 135;
+    case 0: {
+        e->maxHp = 40; break;
     }
-    return 0;
+    case 1: {
+        e->maxHp = 100; break;
+    }
+    case 2: {
+        e->maxHp = 300; break;
+    }
+
+    }
+    return e->maxHp;
 }
 // 每个敌机独立的风筝方向
 static std::unordered_map<Enemy*, int> fengzhengDir;
@@ -85,15 +101,18 @@ static std::unordered_map<Enemy*, int> fengzhengDir;
 std::pair<double, double> Behavior_FengZheng(Enemy* e) {
     //1:->   -1:<-
     if (fengzhengDir.find(e) == fengzhengDir.end()) {
-        fengzhengDir[e] = 1;
+        fengzhengDir[e] = 5;
     }
     int& dir = fengzhengDir[e];
     if (e->coord.first - e->rad <= 0)dir = 1;
     else if (e->coord.first + e->rad >= AllGame::instance().ScreenX)dir = -1;
+    if(RandomDouble(0,1)<=0.005){
+        dir *= -1;
+	}
     double vx=dir*e->speed* AllGame::instance().coef;
-    double vy = RandomDouble(-0.1, 0.1);
-    if (vx > 0 && vx < 0.1)vx = 0.1;
-    else if (vx < 0 && vx > -0.1)vx = -0.1;
+    double vy = RandomDouble(-1, 1);
+    if (vx > 0 && vx < 1)vx = 1;
+    else if (vx < 0 && vx > -1)vx = -1;
     return { vx,vy };
 }
 

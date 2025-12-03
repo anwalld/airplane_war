@@ -4,12 +4,14 @@
 #include "Behavior-EnemyBehavior.h"
 #include "core-Enemy.h"
 #include"system-engine.h"
+#include"core-Player.h"
+#include"core-plane.h"
 static bool IsProduce() {
 	auto Lerp = [](double a, double b, double t) {
 		return a + (b - a) * t;
 		};
-	double min_prob = 0; // 最小生成概率
-	double max_prob = 0.05; // 最大生成概率
+	double min_prob = 0.01; // 最小生成概率
+	double max_prob = 0.30; // 最大生成概率
 	double current_prob = Lerp(min_prob, max_prob, AllGame::instance().coef);
 
 	// 生成随机数并判断是否生成敌机
@@ -33,6 +35,10 @@ void EnemyManager::Produce() {
 void EnemyManager::Update(Player*p) {
 	if (IsProduce())EnemyManager::Produce();
 	for (auto& ee : enemies) {
+		if (IsCrash(p->coord, p->rad, ee->coord, ee->rad)) {
+			ee->NowHp -= 30;
+			p->NowHp -= 30;
+		}
 		if (IsOutRange(ee->coord) || ee->NowHp <= 0) {
 			if (ee->NowHp <= 0)AllGame::instance().AllKill++;
 			ee->alive = false;
@@ -42,7 +48,7 @@ void EnemyManager::Update(Player*p) {
 	}
 }
 void EnemyManager::Render() {
-	Resourse res;
+	static Resourse res;
 	for (const auto& ee : enemies) {
 		int idx = ee->type;
 		if (idx < 0 || idx >= res.EnemyImgs.size())
@@ -55,9 +61,7 @@ void EnemyManager::Render() {
 		int y = (int)(ee->coord.second - ee->rad);
 
 		drawAlphaResize(x, y, w, h, &res.EnemyImgs[idx]);
-
 	}
-
 }
 void EnemyManager::GC() {
 	//esayx

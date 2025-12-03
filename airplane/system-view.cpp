@@ -19,25 +19,25 @@ void MenuView() {
 	IMAGE MenuBackground;
 	loadimage(&MenuBackground, "image\\ui\\bgp.png", 1920, 1080);
 	putimage(0, 0, &MenuBackground);
-	//设置标题
-	settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
-	settextcolor(BLACK);//不一定是黑色
-	outtextxy(625, 60, _T("WARLIGHTING"));
-	outtextxy(50, 0, _T("开始游戏"));
-	setfillcolor(0x000000);//颜色待定
-	fillrectangle(830, 280, 1090, 360);//位置待定
-	outtextxy(830, 280, _T("游戏设置"));
-	setfillcolor(0x000000);//颜色待定
-	fillrectangle(830, 280, 1090, 510);//位置待定
-	outtextxy(830, 430, _T("玩法说明"));
-	setfillcolor(0x000000);//颜色待定
-	fillrectangle(830, 580, 1090, 660);//位置待定
-	outtextxy(830, 580, _T("团队介绍"));
-	setfillcolor(0x000000);//颜色待定
-	fillrectangle(830, 730, 1090, 810);//位置待定
-	outtextxy(830, 730, _T("退出游戏"));
-	setfillcolor(0x000000);//颜色待定
-	fillrectangle(830, 880, 1090, 960);//位置待定
+//设置标题
+settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
+settextcolor(BLACK);//不一定是黑色
+outtextxy(625, 60, _T("WARLIGHTING"));
+outtextxy(830, 280, _T("开始游戏"));
+//setfillcolor(0x000000);//颜色待定
+//fillrectangle(830, 280, 1090, 360);//位置待定
+outtextxy(830, 430, _T("游戏设置"));
+//setfillcolor(0x000000);//颜色待定
+//fillrectangle(830, 280, 1090, 510);//位置待定
+outtextxy(830, 580, _T("玩法说明"));
+//setfillcolor(0x000000);//颜色待定
+//fillrectangle(830, 580, 1090, 660);//位置待定
+outtextxy(830, 730, _T("团队介绍"));
+//setfillcolor(0x000000);//颜色待定
+//fillrectangle(830, 730, 1090, 810);//位置待定
+outtextxy(830, 880, _T("退出游戏"));
+//setfillcolor(0x000000);//颜色待定
+//fillrectangle(830, 880, 1090, 960);//位置待定
 	ExMessage MsgInMenu;
 	while (true)//根据鼠标点击决定进入哪个页面
 	{//有返回功能的界面 会在对应函数执行完后重新打印菜单界面
@@ -47,7 +47,9 @@ void MenuView() {
 			{
 				if (MsgInMenu.x >= 830 && MsgInMenu.x <= 1090 && MsgInMenu.y >= 280 && MsgInMenu.y <= 360)//1.点击开始游戏
 				{
-					int a = ChoosePlane();
+					// 进入战机选择后，退出菜单函数，回到 GameView 继续执行游戏循环
+					ChoosePlane();
+					return;
 				}
 				else if (MsgInMenu.x >= 830 && MsgInMenu.x <= 1090 && MsgInMenu.y >= 430 && MsgInMenu.y <= 510)//2.点击设置
 
@@ -143,8 +145,7 @@ void MenuView() {
 			}
 		}
 	}
-	closegraph();  // 关闭图形窗口
-	exit(0);
+
 }
 
 void SettingsView() {
@@ -385,13 +386,12 @@ int ChoosePlane() {
 					-----即战备界面------*/
 
 void PrintGameScene(const GameManager& g) {
-	cleardevice();
 	/*IMAGE GameBackGround;
 	loadimage(&GameBackGround, "", 1920, 1080);
 	putimage(0, 0, &GameBackGround);*/
 	int NowHp = g.playerMgr.players[0]->NowHp;
 	setfillcolor(0x4f07db);
-	fillrectangle(0, 1030, 480 * (NowHp) / 100, 1070);
+	fillrectangle(0, 530, 480 * (NowHp) / 100, 570);
 
 
 }//载入战机图片 bgm 和飞机的数值
@@ -399,24 +399,34 @@ void PrintGameScene(const GameManager& g) {
 void GameOverView() {}//展示得分
 
 void GameView() {
+	// 先走菜单（里面已经 initgraph 过了）
 	MenuView();
 
-
-	//双缓冲
+	// 双缓冲缓冲区，必须指定大小
 	IMAGE buf(1920, 1080);
-	SetWorkingImage(&buf);
+
 	GameManager g;
+
 	while (g.playerMgr.players[0]->NowHp > 0) {
-		cleardevice();
+		// 每帧更新游戏时间与难度系数
+		AllGame::instance().ChangeGameTime();
+		AllGame::instance().coef = AllGame::instance().CalculateCoef();
+
+		// 所有绘制都画到 buf 上
+		SetWorkingImage(&buf);
+		cleardevice();          // 清空 buf
+
 		g.Update();
 		g.Render();
 		g.CG();
-
-		SetWorkingImage(NULL);
+		PrintGameScene(g);
+		// 把 buf 一次性贴到屏幕
+		SetWorkingImage(NULL);  // 切回屏幕
 		putimage(0, 0, &buf);
-		SetWorkingImage(&buf);
 
+		// 锁 120 帧
 		lock120fps();
 	}
+
 
 }

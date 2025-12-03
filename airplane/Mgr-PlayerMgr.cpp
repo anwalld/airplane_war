@@ -8,6 +8,7 @@ PlayerManager::PlayerManager(){
 }
 void PlayerManager::Produce() {
 	Player* player = new Player();
+	player->skin = AllGame::instance().skin;
 	player->coord = ProducePlayer(player);
 	auto [a, b, c] = ChangePlayerParam(player);
 	player->NowHp = player->maxHp = a;
@@ -25,7 +26,7 @@ void PlayerManager::Update() {
 	}
 }
 void PlayerManager::Render() {
-	Resourse res;
+	static Resourse res;
 	Player* p = players[0];
 
 	int idx = p->skin;

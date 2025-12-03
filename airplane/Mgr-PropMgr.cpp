@@ -12,12 +12,13 @@ void PropManager::Produce(Player*pl) {
 		p->num = TypeAndNum.second;
 		p->NowCoord = RandomProduceCoord(p);
 		p->app = AppMatchProp(p);
+		p->alive = true;
 		AddProp(p);
 }
 void PropManager::AddProp(prop* p) { props.push_back(p); }
 bool PropManager::RandomProduce() {
 	const double& dif = AllGame::instance().coef;
-	double pSuceess = 0.001 + (0.005 - 0.001) * ((1.0 * dif) > 1.0 ? 1.0 : (1.0 * dif));
+	double pSuceess = 0.01 + (0.05 - 0.01) * ((1.0 * dif) > 1.0 ? 1.0 : (1.0 * dif));
 	double r = RandomDouble(0, 1);
 	return r <= pSuceess;
 }
@@ -86,7 +87,7 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 			}
 
 			p->alive = false;
-			it = UsingProp.erase(it);   // ¡û ÕýÈ·Ð´·¨
+			it = UsingProp.erase(it);   
 		}
 		else {
 			++it;
@@ -94,8 +95,7 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 	}
 	}
 void PropManager::Render() {
-	Resourse res;
-
+	static Resourse res;
 	for (const prop* p : props) {
 		int idx = p->app;
 		if (idx < 0 || idx >= res.PropImgs.size())

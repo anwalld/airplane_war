@@ -14,7 +14,7 @@ static const int BaseTypeAtk[3][3] = {
 };
 //子弹半径与对应子弹类型对应
 static const int BulletRad[3] = {
-	50,40,30
+	25,20,15
 };
 //外观
 int AppMatchEnemyType(Enemy* e, bullet* b) {
@@ -85,7 +85,7 @@ std::tuple<int, int,int>RandomAtkAndTypeAndRad(Enemy* e,bullet*b) {
 std::pair<double, double> LineBullet(bullet* b) {
 		b->vx = 0.0;
 		b->vy = -10.0;
-		return std::make_pair(0.0, 15.0);
+		return std::make_pair(0.0, -10.0);
 }
 //斜线子弹vx vy
 std::pair<double, double> BiasBullet(bullet* b) {
@@ -100,13 +100,10 @@ std::pair<double, double> TracedBullet(bullet* b,Player*p) {
 		double dx = p->coord.first - b->NowCoord.first;
 		double dy = p->coord.second - b->NowCoord.second;
 		double dist = sqrt(dx * dx + dy * dy);
-		if (dist < 0.1) {
-			b->vx = 0;
-			b->vy = -5;
-			return std::make_pair(b->vx, b->vy);
-		}
-		b->vx = 5.0 * dx / dist;
-		b->vy = 5.0 * dy / dist;
+		double turn = 0.02; // 追踪转向速率
+		b->vx = b->vx * (1 - turn) + (dx / dist) * 5.0 * turn;
+		b->vy = b->vy * (1 - turn) + (dy / dist) * 5.0 * turn;
+
 		return std::make_pair(b->vx, b->vy);
 }
 

@@ -41,13 +41,33 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 			b->Type = Type;
 			b->rad = Rad;
 			b->app = AppMatchEnemyType(ee,b);
+
+			// 计算初始速度
+			double vx = 0.0, vy = 0.0;
 			switch (b->Type) {
-			case 0: { auto [vx, vy] = LineBullet(b); b->vx = vx; b->vy = vy; break; }
-			case 1: { auto [vx, vy] = BiasBullet(b); b->vx = vx; b->vy = vy; break; }
-			case 2: 
-				auto [vx, vy] = TracedBullet(b, p[0]);
-				b->vx = vx; b->vy = vy; break;
+			case 0: { auto [tx, ty] = LineBullet(b); vx = tx; vy = ty; break; }
+			case 1: { auto [tx, ty] = BiasBullet(b); vx = tx; vy = ty; break; }
+			case 2: { auto [tx, ty] = TracedBullet(b, p[0]); vx = tx; vy = ty; break; }
 			}
+
+			// 屏幕中线 y，用于判断敌机在上半区还是下半区
+			double midY = AllGame::instance().ScreenY * 0.5;
+
+			// 对追踪弹（Type==2）保持指向玩家
+			if (b->Type != 2) {
+				// 如果敌机在屏幕下半（y 更大），让子弹朝上（vy < 0）
+				if (ee->coord.second > midY) {
+					if (vy > 0) vy = -vy;
+				}
+				// 如果敌机在屏幕上半（y 更小），让子弹朝下（vy > 0）
+				else {
+					if (vy < 0) vy = -vy;
+				}
+			}
+
+			b->vx = vx;
+			b->vy = vy;
+
 			b->camp = 1;
 			b->NowCoord = ee->coord;
 			b->alive = true;
@@ -94,8 +114,7 @@ void BulletManager::Update(const std::vector<Player*>& p, const std::vector<Enem
 
 }
 void BulletManager::Render() {
-	Resourse res;
-
+	static Resourse res;
 	for (const bullet* b : bullets) {
 		int idx = b->app;
 		if (idx < 0 || idx >= res.bulletImgs.size())

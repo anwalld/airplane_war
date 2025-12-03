@@ -17,7 +17,7 @@ public:
 	int ScreenX = 1920, ScreenY = 1080;
 	int frameCount = 0;//游戏时间(帧)
 	bool Stop = false;
-	double coef = 0;//难度系数
+	double coef = 0.8;//难度系数
 
 	static AllGame& instance() {
 		static AllGame obj;

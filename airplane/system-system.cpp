@@ -1,4 +1,3 @@
-
 #include <utility>
 #include "system-system.h"
 #include "system-engine.h"
@@ -43,11 +42,12 @@ void lock120fps()
 
     if (delta < target)
     {
-        double sleepTime = target - delta;
-        Sleep((DWORD)(sleepTime * 1000));
+        double sleepTime = target - delta; // seconds
+        DWORD ms = (DWORD)(sleepTime * 1000.0);
+        if (ms > 0) Sleep(ms);
     }
 
-    last = std::chrono::high_resolution_clock::now(); // 更新“上一帧结束时间”
+    last = std::chrono::high_resolution_clock::now(); // 记录本帧结束时刻
 }
 //生成a到b之间的随机整数
 int RandomInt(int a, int b) {
@@ -68,8 +68,8 @@ void drawAlpha(int  picture_x, int picture_y, IMAGE* picture) //x为载入图片的X坐
 {
 
 	// 变量初始化
-	DWORD* dst = GetImageBuffer();    // GetImageBuffer()函数，用于获取绘图设备的显存指针，EASYX自带
-	DWORD* draw = GetImageBuffer();
+    DWORD* dst = GetImageBuffer(GetWorkingImage());   // GetImageBuffer()函数，用于获取绘图设备的显存指针，EASYX自带
+	DWORD* draw = GetImageBuffer(GetWorkingImage());
 	DWORD* src = GetImageBuffer(picture); //获取picture的显存指针
 	int picture_width = picture->getwidth(); //获取picture的宽度，EASYX自带
 	int picture_height = picture->getheight(); //获取picture的高度，EASYX自带
@@ -109,7 +109,7 @@ void drawAlphaResize(int x, int y, int w, int h, IMAGE* srcImg)
     int srcH = srcImg->getheight();
     if (srcW == 0 || srcH == 0) return;
 
-    DWORD* dst = GetImageBuffer();
+    DWORD* dst = GetImageBuffer(GetWorkingImage());
     DWORD* src = GetImageBuffer(srcImg);
 
     int graphW = getwidth();

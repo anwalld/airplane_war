@@ -16,7 +16,7 @@ class bullet {
 public:
 	pair<double, double> NowCoord;
 
-	int rad = 32;
+	int rad = 20;
 	int app=0;
 
 	double vx=0;
