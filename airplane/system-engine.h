@@ -2,7 +2,7 @@
 
 #ifndef AIRPLANE_WARS_ARCH_ENGINE_H
 #define AIRPLANE_WARS_ARCH_ENGINE_H
-
+#include<tuple>
 class AllGame {
 public:
 	int bgm = 0;//放哪首bgm
@@ -31,6 +31,10 @@ public:
 	int ChangeDifWithTime();
 	//计算难度系数
 	double CalculateCoef();
+};
+class PlaneInitDataShow {
+public:
+	static std::tuple<int, int, double> planeAttr[4];
 };
 
 #endif //AIRPLANE_WARS_ARCH_ENGINE_H

@@ -18,3 +18,9 @@ double AllGame::CalculateCoef() {
     double coef = 0.65 * (1.0*AllGame::instance().GameTime / (5 * 60)) + 0.2 * (1.0*AllGame::instance().AllKill / 500)+0.15*(AllGame::instance().dif/(5*2));
     return coef >= 1 ? 1 : coef;
 }
+std::tuple<int, int, double> PlaneInitDataShow::planeAttr[4] = {
+    std::make_tuple(150, 10, 1.0 * 200 / 120),  // 0ºÅ
+    std::make_tuple(100, 15, 1.0 * 200 / 120),  // 1ºÅ
+    std::make_tuple(100, 10, 1.0 * 250 / 120),  // 2ºÅ
+    std::make_tuple(120, 12, 1.0 * 220 / 120)   // 3ºÅ
+};

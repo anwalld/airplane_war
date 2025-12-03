@@ -17,7 +17,7 @@ void MenuView() {
 	cleardevice();
 	//设置背景图
 	IMAGE MenuBackground;
-	loadimage(&MenuBackground, "", 1920, 1080);
+	loadimage(&MenuBackground, "image\\ui\\bgp.png", 1920, 1080);
 	putimage(0, 0, &MenuBackground);
 	//设置标题
 	settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
@@ -56,7 +56,7 @@ void MenuView() {
 					cleardevice();
 					//设置背景图
 					IMAGE MenuBackground;
-					loadimage(&MenuBackground, "", 1920, 1080);
+					loadimage(&MenuBackground, "image\\ui\\bgp.png", 1920, 1080);
 					putimage(0, 0, &MenuBackground);
 					//设置标题
 					settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
@@ -84,7 +84,7 @@ void MenuView() {
 					cleardevice();
 					//设置背景图
 					IMAGE MenuBackground;
-					loadimage(&MenuBackground, "", 1920, 1080);
+					loadimage(&MenuBackground, "image\\ui\\bgp.png", 1920, 1080);
 					putimage(0, 0, &MenuBackground);
 					//设置标题
 					settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
@@ -113,7 +113,7 @@ void MenuView() {
 					cleardevice();
 					//设置背景图
 					IMAGE MenuBackground;
-					loadimage(&MenuBackground, "", 1920, 1080);
+					loadimage(&MenuBackground, "image\\ui\\bgp.png", 1920, 1080);
 					putimage(0, 0, &MenuBackground);
 					//设置标题
 					settextstyle(80, 0, _T("黑体"));//字体不一定是黑体
@@ -151,7 +151,7 @@ void SettingsView() {
 	cleardevice();
 	//设置背景图（原型图并没有）
 	IMAGE SettingsBackground;
-	loadimage(&SettingsBackground, "", 1920, 1080);
+	loadimage(&SettingsBackground, "image\\ui\\bgp.png", 1920, 1080);
 	putimage(0, 0, &SettingsBackground);
 	setbkmode(TRANSPARENT);
 	// 各设置按键
@@ -166,8 +166,8 @@ void SettingsView() {
 	//设置更改按键(加减号)
 	IMAGE Plus;
 	IMAGE Minus;
-	loadimage(&Plus, "", 80, 80);
-	loadimage(&Minus, "", 80, 80);
+	loadimage(&Plus, "image\\ui\\plus.png", 80, 80);
+	loadimage(&Minus, "image\\ui\\minus,png", 80, 80);
 	putimage(1580, 160, &Minus);
 	putimage(1740, 160, &Plus);
 	//调整音量大小
@@ -275,99 +275,112 @@ void Instructions() {}//等原型
 
 
 int ChoosePlane() {
-	int PlaneIndex = 0;
-	settextstyle(36, 0, _T("微软雅黑"));//字体大小和样式
+    int PlaneIndex = 0;
+    settextstyle(36, 0, _T("微软雅黑"));
 
-	IMAGE Plane0;
-	loadimage(&Plane0, "", 640, 640);
-	IMAGE Plane1;
-	loadimage(&Plane1, "", 640, 640);
-	IMAGE Plane2;
-	loadimage(&Plane2, "", 640, 640);
+    // ===== 背景图 =====
+    IMAGE bg;
+    loadimage(&bg, "image\\ui\\bgp.png");
 
+    // ===== 加载四张飞机贴图 =====
+    IMAGE PlaneImg[4];
+    for (int i = 0; i < 4; i++) {
+        char path[64];
+        sprintf(path, "image\\player\\%d.png", i);
+        loadimage(&PlaneImg[i], path);
+    }
 
+    cleardevice();
 
+    // ===== 布局区域 =====
+    int bigX = 320, bigY = 80, bigW = 640, bigH = 640;
+    int attrX1 = 1000, attrY1 = 80, attrX2 = 1300, attrY2 = 720;
 
-	setfillcolor(0x000000);
-	fillrectangle(320, 80, 800, 720);  // 左上角(320,80)，右下角(800,720)（尺寸640*640）
-	rectangle(320, 80, 800, 720);      // 绘制边框
-	outtextxy(480, 380, _T("立绘贴图")); // 文字居中显示
+    int iconW = 200, iconH = 200, iconY = 760;
+    int bx[4] = { 320, 540, 760, 980 };
 
+    TCHAR buff[64];
 
-	setfillcolor(0x000000);
-	fillrectangle(800, 80, 1120, 720); // 左上角(800,80)，右下角(1120,720)（尺寸320*640）
-	rectangle(800, 80, 1120, 720);
-	outtextxy(920, 380, _T("血量：%d", PlayerPlaneData(PlaneIndex).first));
-	outtextxy(920, 400, _T("射速：%d", PlayerPlaneData(PlaneIndex).second));
-	outtextxy(920, 420, _T("攻击力：%d", PlayerPlaneData(PlaneIndex).third));
+    // ===== 刷新界面函数 =====
+    auto RefreshUI = [&](int idx) {
+        cleardevice();
+        putimage(0, 0, &bg);
 
-	// ========== 3. 绘制“种类1”模块 ==========
-	loadimage(&Plane0, "", 320, 200);
-	putimage(320, 720, &Plane0);
+        // ===== 左侧大图展示 =====
+        setfillcolor(RGB(20,20,20));
+        fillrectangle(bigX, bigY, bigX + bigW, bigY + bigH);
+        rectangle(bigX, bigY, bigX + bigW, bigY + bigH);
 
+        drawAlphaResize(bigX, bigY, bigW, bigH, &PlaneImg[idx]);
 
-	// ========== 4. 绘制“种类2”模块 ==========
-	loadimage(&Plane1, "", 320, 200);
-	putimage(640, 720, &Plane1);
+        // ===== 属性框 =====
+        setfillcolor(RGB(30,30,30));
+        fillrectangle(attrX1, attrY1, attrX2, attrY2);
+        rectangle(attrX1, attrY1, attrX2, attrY2);
 
+        auto [hp, atk, speed] = PlaneInitDataShow::planeAttr[idx];
 
-	// ========== 5. 绘制“种类3”模块 ==========
-	loadimage(&Plane2, "", 320, 200);
-	putimage(800, 720, &Plane2);
+        _stprintf(buff, _T("血量：%d"), hp);
+        outtextxy(attrX1 + 20, attrY1 + 120, buff);
 
+        _stprintf(buff, _T("攻击力：%d"), atk);
+        outtextxy(attrX1 + 20, attrY1 + 180, buff);
 
-	// ========== 6. 绘制“返回”模块 ==========
-	//setfillcolor(0x000000);
-	//fillrectangle(80, 720, 280, 920);   // 左上角(80,720)，右下角(280,920)（尺寸200*200）
-	//rectangle(80, 720, 280, 920);
-	//outtextxy(130, 800, _T("返回"));
+        _stprintf(buff, _T("速度：%.2f"), speed);
+        outtextxy(attrX1 + 20, attrY1 + 240, buff);
 
-	// ========== 7. 绘制“出击”模块 ==========
-	setfillcolor(0x000000);
-	fillrectangle(1640, 720, 1840, 920); // 左上角(1640,720)，右下角(1840,920)（尺寸200*200）
-	rectangle(1640, 720, 1840, 920);
-	outtextxy(1690, 800, _T("出击"));
+        // ===== 底部四个按钮小图 =====
+        for (int i = 0; i < 4; i++) {
+            if (i == idx) {
+                setlinecolor(RGB(255,215,0));
+                setlinestyle(PS_SOLID, 5);
+            } else {
+                setlinecolor(WHITE);
+                setlinestyle(PS_SOLID, 1);
+            }
 
-	ExMessage ChoosePlane;
-	while (true) {
-		if (peekmessage(&ChoosePlane, EM_MOUSE)) {
-			if (ChoosePlane.message == WM_LBUTTONDOWN) {
-				if (ChoosePlane.x >= 480 && ChoosePlane.x <= 800 && ChoosePlane.y >= 720 && ChoosePlane.y <= 920) {
-					PlaneIndex = 0;
-				}
-				else if (ChoosePlane.x >= 800 && ChoosePlane.x <= 1120 && ChoosePlane.y >= 720 && ChoosePlane.y <= 920) {
-					PlaneIndex = 1;
-				}
-				else if (ChoosePlane.x >= 1120 && ChoosePlane.x <= 1440 && ChoosePlane.y >= 720 && ChoosePlane.y <= 920) {
-					PlaneIndex = 2;
+            rectangle(bx[i], iconY, bx[i] + iconW, iconY + iconH);
+            drawAlphaResize(bx[i] + 10, iconY + 10, iconW - 20, iconH - 20, &PlaneImg[i]);
+        }
 
-				}
-				/*else if (ChoosePlane.x >=80 && ChoosePlane.x <=280 && ChoosePlane.y >=720 && ChoosePlane.y <=1000 ) {
+        // ===== 出击按钮 =====
+        setfillcolor(RGB(40,40,40));
+        fillrectangle(1500, 760, 1700, 900);
+        rectangle(1500, 760, 1700, 900);
+        outtextxy(1550, 810, _T("出击"));
+    };
 
-				}*/
-				else if (ChoosePlane.x >= 1640 && ChoosePlane.x <= 1840 && ChoosePlane.y >= 720 && ChoosePlane.y <= 1000) {
-					break;
-				}
+    // ===== 初次刷新 =====
+    RefreshUI(PlaneIndex);
 
+    // ===== 输入循环 =====
+    ExMessage m;
+    while (true) {
+        if (peekmessage(&m, EM_MOUSE) && m.message == WM_LBUTTONDOWN) {
+            
+            // 选择飞机按钮
+            for (int i = 0; i < 4; i++) {
+                if (m.x >= bx[i] && m.x <= bx[i] + iconW &&
+                    m.y >= iconY && m.y <= iconY + iconH) {
 
-			}
+                    PlaneIndex = i;
+                    RefreshUI(PlaneIndex);
+                }
+            }
 
-		}
+            // 出击按钮
+            if (m.x >= 1500 && m.x <= 1700 &&
+                m.y >= 760  && m.y <= 900) {
+                break;
+            }
+        }
+    }
 
+    AllGame::instance().skin = PlaneIndex;
+    return PlaneIndex;
+}
 
-
-
-
-
-	}
-	AllGame::instance().skin = PlaneIndex;
-
-
-
-
-	return PlaneIndex;
-
-}/*该函数返回值决定 皮肤 MaxHp 射速等Player的性质
+/*该函数返回值决定 皮肤 MaxHp 射速等Player的性质
 					实现战机选择 数值和立绘展示 以及战机选择
 					-----即战备界面------*/
 
