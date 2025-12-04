@@ -41,7 +41,7 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 			b->Type = Type;
 			b->rad = Rad;
 			b->app = AppMatchEnemyType(ee,b);
-
+			b->camp = 1;
 			// 计算初始速度
 			double vx = 0.0, vy = 0.0;
 			switch (b->Type) {
@@ -68,7 +68,7 @@ void BulletManager::Produce(const std::vector<Player*>& p, const std::vector<Ene
 			b->vx = vx;
 			b->vy = vy;
 
-			b->camp = 1;
+			
 			b->NowCoord = ee->coord;
 			b->alive = true;
 			AddBullet(b);

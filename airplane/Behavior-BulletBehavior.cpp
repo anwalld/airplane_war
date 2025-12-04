@@ -85,15 +85,22 @@ std::tuple<int, int,int>RandomAtkAndTypeAndRad(Enemy* e,bullet*b) {
 std::pair<double, double> LineBullet(bullet* b) {
 		b->vx = 0.0;
 		b->vy = -10.0;
-		return std::make_pair(0.0, -10.0);
+		if (b->camp == 0)return std::make_pair(0.0, -10.0);
+		else return std::make_pair(0.0, 10);
 }
 //Ð±Ïß×Óµ¯vx vy
 std::pair<double, double> BiasBullet(bullet* b) {
-		double deg = RandomDouble(-60.0, 60.0);
-		double rad = deg * 3.1415926 / 180.0;
-		b->vx = 7.0 * sin(rad);
+	double deg = RandomDouble(-60.0, 60.0);
+	double rad = deg * 3.1415926 / 180.0;
+	b->vx = 7.0 * sin(rad);
+	if (b->camp) {
+		b->vy = 7.0 * cos(rad);
+		return std::make_pair(b->vx, b->vy);
+	}
+	else {
 		b->vy = -7.0 * cos(rad);
 		return std::make_pair(b->vx, b->vy);
+	}
 }
 //¸ú×Ù×Óµ¯vx vy
 std::pair<double, double> TracedBullet(bullet* b,Player*p) {
