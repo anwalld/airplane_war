@@ -20,7 +20,7 @@ void PropManager::Produce(Player*pl) {
 void PropManager::AddProp(prop* p) { props.push_back(p); }
 bool PropManager::RandomProduce() {
 	const double& dif = AllGame::instance().coef;
-	double pSuceess = 0.01 + (0.05 - 0.01) * ((1.0 * dif) > 1.0 ? 1.0 : (1.0 * dif));
+	double pSuceess = 0.001 + (0.05 - 0.01) * ((1.0 * dif) > 1.0 ? 1.0 : (1.0 * dif));
 	double r = RandomDouble(0, 1);
 	return r <= pSuceess;
 }

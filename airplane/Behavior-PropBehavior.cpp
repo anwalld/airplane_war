@@ -4,17 +4,16 @@
 #include"system-engine.h"
 #include<unordered_map>
 #include"core-Player.h"
-std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
+std::pair<int, int> RandomTypeAndNum(Player* player, prop* p)
 {
-    double diff = AllGame::instance().coef;  // 难度(0~1)
+    double diff = AllGame::instance().coef;
 
     double hpRatio = (double)player->NowHp / player->maxHp;
-    double HP_factor = 1 + (1 - hpRatio) * 2;     // 1~3，血越少越高
+    double HP_factor = 1 + (1 - hpRatio) * 2;
 
-    double Permanent_factor = 1 - 0.5 * diff;   // 难度越高 永久类越少
-    double Speed_factor = 1 + diff * 1.0;   // 难度越高 SpeedUp 越多
-    double DecreaseDif_factor = 1 - 0.7 * diff;   // 难度越高 降低难度越少
-    double Nerf_factor = 1 - 0.4 * diff;   // 清屏/炸弹/无敌减少
+    double Permanent_factor = 1 - 0.5 * diff;
+    double Speed_factor = 1 + diff * 1.0;
+    double Nerf_factor = 1 - 0.4 * diff;
 
     // ===== 0 永久类 =====
     double w_shoot = 6 * Permanent_factor;
@@ -22,18 +21,18 @@ std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
     double w_maxhp = 5 * Permanent_factor;
     double w_speed = 4 * Speed_factor;
 
-    // ===== 1 一次性类 =====
+    // ===== 1 一次性类（保留） =====
     double w_heal = 12 * HP_factor;
     double w_clear = 15 * Nerf_factor;
     double w_bomb = 18 * Nerf_factor;
 
-    // ===== 2 限时类 =====
+    // ===== 2 限时类（删掉） =====
     double w_laser = 8;
     double w_super = 12;
-    double w_decreaseDif = 5 * HP_factor * DecreaseDif_factor;
-    double w_invincible = 10 * HP_factor * Nerf_factor;
+    double w_decreaseDif = 5 * HP_factor;
+    double w_invincible = 10 * HP_factor;
 
-    // ===== 权重数组 + 映射 =====
+
     std::vector<double> all;
     std::vector<std::pair<int, int>> mapping;
 
@@ -44,33 +43,37 @@ std::pair<int, int> RandomTypeAndNum(Player* player,prop*p)
         }
         };
 
-    // 0 永久类（4个）
+    // ===== append 永久类 =====
     append({ w_shoot, w_damage, w_maxhp, w_speed }, 0);
 
-    // 1 一次性类（3个）
+    // ===== append 一次性类 =====
     append({ w_heal, w_clear, w_bomb }, 1);
 
-    // 2 限时类（4个）
-    append({ w_laser, w_super, w_decreaseDif, w_invincible }, 2);
+    // ===== 限时类不 append =====
+    // append({ w_laser, w_super, w_decreaseDif, w_invincible }, 2);
 
     // ===== 求总权重 =====
     double total = 0;
     for (double w : all) total += w;
 
-    double r = RandomDouble(0, total);  
+    double r = RandomDouble(0, total);
 
-    std::pair<int, int>TypeAndNum = { 0,0 };
+    std::pair<int, int> TypeAndNum = { 0,0 };
+
     // ===== 按区间抽取 =====
     for (int i = 0; i < all.size(); i++) {
         if (r < all[i]) {
-            TypeAndNum = mapping[i]; break;
+            TypeAndNum = mapping[i];
+            break;
         }
         r -= all[i];
     }
-	p->type = TypeAndNum.first;
-	p->num = TypeAndNum.second;
-	return TypeAndNum;
+
+    p->type = TypeAndNum.first;
+    p->num = TypeAndNum.second;
+    return TypeAndNum;
 }
+
 //根据道具类型和编号对应app
 int AppMatchProp(prop* p) {
     switch (p->type) {
@@ -139,7 +142,7 @@ std::pair<double, double>LeaveMoveVxAndVy(prop* p) {
 	}
 	CurVx[p] += (TarVx[p] - CurVx[p]) * 0.1;
 	p->vx = p->speed * CurVx[p];
-	p->vy = 0.2;
+	p->vy = 2;
 	return { p->vx,p->vy };
 }
 std::pair<double, double>PropMoveCoord(prop* p) {

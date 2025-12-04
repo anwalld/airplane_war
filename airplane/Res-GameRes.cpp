@@ -40,4 +40,12 @@ void Resourse::loadingProp() {
 	loadimage(&PropImgs[2], "image\\prop\\2.png");
 	loadimage(&PropImgs[3], "image\\prop\\3.png");
 	loadimage(&PropImgs[4], "image\\prop\\4.png");
+	loadimage(&PropImgs[5], "image\\prop\\5.png");
+	loadimage(&PropImgs[6], "image\\prop\\6.png");
+	loadimage(&PropImgs[7], "image\\prop\\7.png");
+	loadimage(&PropImgs[8], "image\\prop\\8.png");
+	loadimage(&PropImgs[9], "image\\prop\\9.png");
+	loadimage(&PropImgs[10], "image\\prop\\10.png");
+
+
 }
