@@ -10,6 +10,8 @@
 #include"easyx.h"
 #include"Res-GameRes.h"
 #include"system-system.h"
+extern std::unordered_map<prop*, double> CurVx;
+extern std::unordered_map<prop*, double> TarVx;
 class PropManager {
 public:
 	std::vector<prop*> props;

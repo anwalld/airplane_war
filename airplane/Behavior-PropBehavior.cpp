@@ -118,8 +118,8 @@ std::pair<double, double>RandomProduceCoord(prop* p) {
 	return p->NowCoord;
 }
 //ÂäÒ¶ÒÆ¶¯
-static std::unordered_map<prop*, double>CurVx;
-static std::unordered_map<prop*, double>TarVx;
+std::unordered_map<prop*, double>CurVx;
+std::unordered_map<prop*, double>TarVx;
 std::pair<double, double>LeaveMoveVxAndVy(prop* p) {
 	if (CurVx.find(p) == CurVx.end()) {
 		CurVx[p] = 0;
@@ -128,6 +128,7 @@ std::pair<double, double>LeaveMoveVxAndVy(prop* p) {
 	if (RandomDouble(0, 1) <= 0.3) {
 		TarVx[p] = RandomDouble(-1, 1);
 	}
+
 	if (p->NowCoord.first - p->rad <= 0) {
 		CurVx[p] = std::fabs(CurVx[p]);
 		TarVx[p] = std::fabs(TarVx[p]);

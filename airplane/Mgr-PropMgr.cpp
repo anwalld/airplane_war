@@ -7,6 +7,8 @@
 
 void PropManager::Produce(Player*pl) {
 		prop* p = new prop;
+		CurVx[p] = 0;
+		TarVx[p] = RandomDouble(-1, 1);
 		std::pair<int, int>TypeAndNum = RandomTypeAndNum(pl, p);
 		p->type = TypeAndNum.first;
 		p->num = TypeAndNum.second;
@@ -30,8 +32,8 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 			pp->alive = false;
 		}
 		if (pp->alive == false)continue;
-		std::pair<double, double>v = PropMoveCoord(pp);
-		pp->NowCoord = SystemMove(pp->NowCoord, v.first, v.second);
+		 pp->NowCoord = PropMoveCoord(pp);
+		
 	}
 	for (prop* p : props) {
 		if (p->alive == false)continue;
