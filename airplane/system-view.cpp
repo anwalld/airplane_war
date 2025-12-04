@@ -408,13 +408,13 @@ void GameOverView() {
 	settextstyle(50, 0, _T("黑体"));
 	TCHAR gameover[15];
 	_stprintf(gameover, _T("游戏结束"));
-	outtextxy(960, 150, gameover);
+	outtextxy(660, 150, gameover);
 	TCHAR score[10];
 	_stprintf(score, _T("得分：%d"), AllGame::instance().AllKill);
-	outtextxy(960, 400, score);
+	outtextxy(660, 400, score);
 	TCHAR back[15];
 	_stprintf(back, _T("点击ESC返回菜单"));
-	outtextxy(960, 1000, back);
+	outtextxy(660, 600, back);
 	ExMessage t;
 	while (true) {
 		peekmessage(&t, EX_KEY);
