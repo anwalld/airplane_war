@@ -39,25 +39,29 @@ std::pair<int, int>RandomModelAndTypeWithCoef(Enemy* e) {
     e->type = ThreeChooseOneWithCoef({ 0.9,0 }, { 0.1,0.2 }, { 0.0,0.8 }, AllGame::instance().coef);
     // 根据 type 匹配 modol
     switch (e->type) {
-    case 0: {//小怪
-        e->modol = ThreeChooseOneWithCoef({ 0.4,0.1 }, { 0.25,0.45 }, { 0.15,0.45 }, AllGame::instance().coef);
+    case 0: { // 小怪
+        e->modol = ThreeChooseOneWithCoef(
+            { 0.20, 0.05 },   // 风筝
+            { 0.40, 0.45 },   // 歼灭
+            { 0.40, 0.50 },   // 进军
+            AllGame::instance().coef
+        );
         break;
     }
-    case 1: {//精英怪
-        e->modol = ThreeChooseOneWithCoef({ 0.2,0.1 }, { 0.4,0.45 }, { 0.4,0.45 }, AllGame::instance().coef);
+    case 1: { // 精英
+        e->modol = ThreeChooseOneWithCoef(
+            { 0.10, 0.05 },   // 风筝
+            { 0.45, 0.45 },   // 歼灭
+            { 0.45, 0.50 },   // 进军
+            AllGame::instance().coef
+        );
         break;
     }
-    case 2: {//boss
+    case 2: { // boss
         e->modol = 0;
         break;
     }
-          return  { e->modol,e->type };
-    default: {
-        e->modol = ThreeChooseOneWithCoef({ 0.4,0.1 }, { 0.25,0.45 }, { 0.15,0.45 }, AllGame::instance().coef);
-        break;
-    }
-    };
-    return { e->modol,e->type };
+    }    return { e->modol,e->type };
 }
 
 // 根据 Type 匹配半径
@@ -97,23 +101,34 @@ int MaxHpMatchType(Enemy* e) {
 }
 // 每个敌机独立的风筝方向
 static std::unordered_map<Enemy*, int> fengzhengDir;
+
 //风筝
 std::pair<double, double> Behavior_FengZheng(Enemy* e) {
-    //1:->   -1:<-
+
+    // 初始化方向
     if (fengzhengDir.find(e) == fengzhengDir.end()) {
-        fengzhengDir[e] = 5;
+        fengzhengDir[e] = (RandomDouble(0, 1) < 0.5 ? -1 : 1);
     }
+
     int& dir = fengzhengDir[e];
-    if (e->coord.first - e->rad <= 0)dir = 1;
-    else if (e->coord.first + e->rad >= AllGame::instance().ScreenX)dir = -1;
-    if(RandomDouble(0,1)<=0.001){
+    // 少量随机反转
+    if (RandomDouble(0, 1) <= 0.05) { 
         dir *= -1;
-	}
-    double vx=dir*e->speed* AllGame::instance().coef;
-    double vy = RandomDouble(-1, 1);
-    if (vx > 0 && vx < 1)vx = 1;
-    else if (vx < 0 && vx > -1)vx = -1;
-    return { vx,vy };
+    }
+
+    // 屏幕边缘处理
+    if (e->coord.first - e->rad <= 0) dir = 1;
+    else if (e->coord.first + e->rad >= AllGame::instance().ScreenX) dir = -1;
+
+    double vx = dir * (e->speed * 3);
+
+    // 绝不能为 0
+    if (vx == 0) vx = dir * 3;
+
+    // 竖直随机
+    double vy = RandomDouble(0, 0.5);
+
+    return { vx, vy };
 }
 
 //歼灭

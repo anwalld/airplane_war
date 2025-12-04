@@ -31,12 +31,12 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 		if(IsOutRange(pp->NowCoord)){
 			pp->alive = false;
 		}
-		if (pp->alive == false)continue;
+		if (pp->alive == false&&UsingProp.find(pp)==UsingProp.end())continue;
 		 pp->NowCoord = PropMoveCoord(pp);
 		
 	}
 	for (prop* p : props) {
-		if (p->alive == false)continue;
+		if (p->alive == false && UsingProp.find(p) == UsingProp.end())continue;
 		if (IsCrash(p->NowCoord, p->rad, player->coord, player->rad)) {
 		switch (p->type) {
 		case 0: {
@@ -68,6 +68,7 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 			case 3: { PropEffect_Invincible(player, p); break; }
 			default: { break; }
 			}
+			p->alive = false;
 			UsingProp[p] = AllGame::instance().GameTime;
 			break;
 		}
@@ -88,7 +89,7 @@ void PropManager::Update(BulletManager& b, EnemyManager& e, Player* player) {
 			case 3: { player->camp = 0; break; }
 			}
 
-			p->alive = false;
+			
 			it = UsingProp.erase(it);   
 		}
 		else {
@@ -124,7 +125,7 @@ void PropManager::GC() {
 	//kill
 	props.erase(std::remove_if(props.begin(), props.end(),
 		[](prop* p) {
-			if (!p->alive) {
+			if (!p->alive&&UsingProp.find(p)==UsingProp.end()) {
 				if (UsingProp.find(p) != UsingProp.end())UsingProp.erase(p);
 				AllKindDestroy(p);
 				return true;
