@@ -32,7 +32,7 @@ std::pair<int, int>RandomModelAndTypeWithCoef(Enemy* e) {
         pc /= sum;
         double j = RandomDouble(0, 1);
         if (j <= pa)return 0;
-        else if (j <= pb)return 1;
+        else if (j <= pb+pa)return 1;
         else return 2;
         };
     // ¸ù¾Ý coef ¼ÆËã type
@@ -106,7 +106,7 @@ std::pair<double, double> Behavior_FengZheng(Enemy* e) {
     int& dir = fengzhengDir[e];
     if (e->coord.first - e->rad <= 0)dir = 1;
     else if (e->coord.first + e->rad >= AllGame::instance().ScreenX)dir = -1;
-    if(RandomDouble(0,1)<=0.005){
+    if(RandomDouble(0,1)<=0.001){
         dir *= -1;
 	}
     double vx=dir*e->speed* AllGame::instance().coef;

@@ -17,22 +17,22 @@ void Resourse::loadingPlayer() {
 
 }
 void Resourse::loadingEnemy() {
-	loadimage(&EnemyImgs[0], "image\\enemy\\common.jpg");
-	loadimage(&EnemyImgs[1], "image\\enemy\\elite.jpg");
-	loadimage(&EnemyImgs[2], "image\\enemy\\boss.jpg");
+	loadimage(&EnemyImgs[0], "image\\enemy\\common.png");
+	loadimage(&EnemyImgs[1], "image\\enemy\\elite.png");
+	loadimage(&EnemyImgs[2], "image\\enemy\\boss.png");
 }
 void Resourse::loadingBullet() {
 	loadimage(&bulletImgs[0], "image\\bullet\\0.png");
-	loadimage(&bulletImgs[1], "image\\bullet\\1.jpg");
+	loadimage(&bulletImgs[1], "image\\bullet\\1.png");
 	loadimage(&bulletImgs[2], "image\\bullet\\2.png");
 	loadimage(&bulletImgs[3], "image\\bullet\\3.png");
-	loadimage(&bulletImgs[4], "image\\bullet\\4.jpg");
+	loadimage(&bulletImgs[4], "image\\bullet\\4.png");
 	loadimage(&bulletImgs[5], "image\\bullet\\5.png");
 	loadimage(&bulletImgs[6], "image\\bullet\\6.png");
-	loadimage(&bulletImgs[7], "image\\bullet\\7.jpg");
-	loadimage(&bulletImgs[8], "image\\bullet\\8.jpg");
+	loadimage(&bulletImgs[7], "image\\bullet\\7.png");
+	loadimage(&bulletImgs[8], "image\\bullet\\8.png");
 	loadimage(&bulletImgs[9], "image\\bullet\\9.png");
-	loadimage(&bulletImgs[10], "image\\bullet\\10.jpg");
+	loadimage(&bulletImgs[10], "image\\bullet\\10.png");
 }
 void Resourse::loadingProp() {
 	loadimage(&PropImgs[0], "image\\prop\\0.png");
