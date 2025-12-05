@@ -23,7 +23,7 @@ std::pair<int, int> RandomTypeAndNum(Player* player, prop* p)
 
     // ===== 1 一次性类（保留） =====
     double w_heal = 12 * HP_factor;
-    double w_clear = 15 * Nerf_factor;
+    double w_clear = 5 * Nerf_factor;
     double w_bomb = 18 * Nerf_factor;
 
     // ===== 2 限时类（删掉） =====
@@ -182,7 +182,7 @@ void PropEffect_IncreasePlaneSpeed(Player* player, prop* p) {
 //1.0回血
 void PropEffect_Heal(Player* player, prop* p) {
     p->CD = 1.0 * 1000 / 120 - 1;
-	player->NowHp += 10;
+	player->NowHp += 100;
 	p->alive = false;
 }
 //1.1清屏

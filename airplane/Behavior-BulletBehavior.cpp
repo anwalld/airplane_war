@@ -107,7 +107,7 @@ std::pair<double, double> TracedBullet(bullet* b,Player*p) {
 		double dx = p->coord.first - b->NowCoord.first;
 		double dy = p->coord.second - b->NowCoord.second;
 		double dist = sqrt(dx * dx + dy * dy);
-		double turn = 0.02; // 追踪转向速率
+		double turn = 0.01; // 追踪转向速率
 		b->vx = b->vx * (1 - turn) + (dx / dist) * 5.0 * turn;
 		b->vy = b->vy * (1 - turn) + (dy / dist) * 5.0 * turn;
 

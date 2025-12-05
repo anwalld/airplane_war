@@ -11,7 +11,7 @@ static bool IsProduce() {
 		return a + (b - a) * t;
 		};
 	double min_prob = 0.01; // 最小生成概率
-	double max_prob = 0.30; // 最大生成概率
+	double max_prob = 0.1; // 最大生成概率
 	double current_prob = Lerp(min_prob, max_prob, AllGame::instance().coef);
 
 	// 生成随机数并判断是否生成敌机

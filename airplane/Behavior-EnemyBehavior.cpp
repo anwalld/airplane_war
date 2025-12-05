@@ -143,7 +143,7 @@ std::pair<double, double> Behavior_JianMie(Enemy* e, Player* p) {
     double ux = dx / dist;
     double uy = dy / dist;
 
-    double speedBase = e->speed * AllGame::instance().coef;
+    double speedBase = e->speed * AllGame::instance().coef*100;
 
     double vx = ux * speedBase;
     double vy = uy * speedBase;
